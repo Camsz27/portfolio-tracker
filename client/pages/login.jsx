@@ -1,10 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 
 const login = () => {
   return (
     <div className='flex min-h-screen text-primary'>
-      <section className='min-h-full w-1/2 flex flex-col justify-center px-8 space-y-8'>
-        <h1 className='text-7xl font-semibold'>
+      <section className='min-h-full md:w-1/2 flex flex-col justify-center space-y-8 pl-20'>
+        <h1 className='text-5xl lg:text-7xl font-semibold'>
           Welcome back to <span className='text-purple-500'>OUTFOLIO</span>
         </h1>
         <form
@@ -17,7 +18,7 @@ const login = () => {
             name='username'
             id='username'
             placeholder='Username'
-            className='rounded-lg border-2 border-purple-500'
+            className='rounded-lg w-56 lg:w-1/2 border-gray-300 focus:border-purple-500 focus:ring-purple-500'
             required
           />
           <input
@@ -25,22 +26,22 @@ const login = () => {
             name='password'
             id='password'
             placeholder='Password'
-            className='rounded-lg focus:border-purple-500 focus:border-2'
+            className='rounded-lg w-56 lg:w-1/2 border-gray-300 focus:border-purple-500 focus:ring-purple-500'
             required
           />
-          <button className='bg-purple-500 text-secondary font-semibold w-1/4 rounded-lg py-2 hover:bg-purple-700 transform transition duration-500 hover:scale-105'>
+          <button className='bg-purple-500 text-secondary font-semibold w-36 rounded-lg py-2 hover:bg-purple-700 transform transition duration-500 hover:scale-105 lg:w-1/4'>
             Sign in
           </button>
           <h4>
-            Don't have an account?{' '}
-            <a href='register' className='text-purple-500'>
-              Register
-            </a>
+            {"Don't have an account? "}
+            <Link href='register'>
+              <a className='text-purple-500'>Register</a>
+            </Link>
           </h4>
         </form>
       </section>
-      <section className='bg-purple-500 min-h-full w-1/2 text-white flex flex-col justify-center px-8'>
-        <h1 className='text-5xl font-semibold'>
+      <section className='bg-purple-500 min-h-full text-white md:flex flex-col justify-center px-8 hidden md:w-1/2'>
+        <h1 className='text-3xl lg:text-5xl font-semibold'>
           Keep track of your portfolio with an easy to use{' '}
           <span className='text-purple-900'>dashboard</span>
         </h1>
