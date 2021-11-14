@@ -9,12 +9,10 @@ const SideNav = () => {
 
   return (
     <div
-      className={`min-h-screen bg-purple-500 pt-10 ${
-        collapse ? 'px-7' : 'pl-10'
-      }`}
+      className={`min-h-screen bg-purple-500 ${collapse ? 'px-7' : 'pl-10'}`}
     >
       <span
-        className={`flex justify-between ${
+        className={`flex justify-between mt-10 mb-64 ${
           collapse ? 'flex-col items-center' : 'pr-7'
         }`}
       >
@@ -23,7 +21,7 @@ const SideNav = () => {
             collapse ? 'hidden' : ''
           }`}
         >
-          Dashboard
+          Outfolio
         </h1>
         {collapse && (
           <svg
@@ -59,7 +57,7 @@ const SideNav = () => {
         )}
       </span>
       <ul
-        className={`text-secondary text-xl flex flex-col justify-center min-h-full gap-y-10 ${
+        className={`text-secondary text-xl flex flex-col justify-center gap-y-10 ${
           collapse ? '' : 'pr-16'
         }`}
       >
