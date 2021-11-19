@@ -9,7 +9,9 @@ const SideNav = () => {
 
   return (
     <div
-      className={`min-h-screen bg-purple-500 ${collapse ? 'px-7' : 'pl-10'}`}
+      className={`min-h-screen bg-purple-500 z-10 absolute lg:relative ${
+        collapse ? 'px-7' : 'pl-10'
+      }`}
     >
       <span
         className={`flex justify-between mt-10 mb-64 ${
