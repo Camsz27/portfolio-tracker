@@ -8,7 +8,7 @@ const Graphs = () => {
         <button
           className={`${
             active === 'chart' ? 'bg-purple-600' : 'bg-purple-400'
-          } text-white rounded-xl px-3 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
+          } text-white rounded-xl px-2.5 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
           onClick={() => setActive('chart')}
         >
           Chart
@@ -16,7 +16,7 @@ const Graphs = () => {
         <button
           className={`${
             active === 'allocation' ? 'bg-purple-600' : 'bg-purple-400'
-          } text-white rounded-xl px-3 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
+          } text-white rounded-xl px-2.5 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
           onClick={() => setActive('allocation')}
         >
           Allocation
@@ -24,7 +24,7 @@ const Graphs = () => {
         <button
           className={`${
             active === 'statistics' ? 'bg-purple-600' : 'bg-purple-400'
-          } text-white rounded-xl px-3 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
+          } text-white rounded-xl px-2.5 py-1 md:px-3.5 md:py-2 hover:bg-purple-600 transform transition duration-500 hover:scale-105`}
           onClick={() => setActive('statistics')}
         >
           Statistics
