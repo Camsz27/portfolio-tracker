@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeaderSummary = () => {
   return (
-    <div className='w-4/5 mx-auto mt-10 pl-5 lg:pl-0'>
+    <div className='w-5/6 mx-auto mt-10 pl-5 lg:pl-0'>
       <h4 className='text-gray-600 text-xl mb-3'>Current Balance</h4>
       <span className='flex gap-x-4 lg:items-center justify-between mb-3 flex-col md:flex-row gap-y-5'>
         <h2 className='text-3xl md:text-5xl'>$785.98</h2>

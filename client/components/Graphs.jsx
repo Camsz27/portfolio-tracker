@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Graphs = () => {
   const [active, setActive] = useState('chart');
   return (
-    <div className='w-4/5 mx-auto mt-5 pl-5 lg:pl-0'>
+    <div className='w-5/6 mx-auto mt-5 pl-5 lg:pl-0'>
       <header className='flex justify-between lg:w-1/3 md:w-96 mb-3'>
         <button
           className={`${
