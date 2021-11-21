@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 const SideNav = () => {
   const [collapse, setCollapse] = useState(false);
@@ -63,46 +64,50 @@ const SideNav = () => {
           collapse ? '' : 'pr-16'
         }`}
       >
-        <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
-            />
-          </svg>
-          {!collapse && (
-            <h4 className='col-span-4 group-hover:underline'>My Dashboard</h4>
-          )}
-        </li>
-        <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            enableBackground='new 0 0 24 24'
-            viewBox='0 0 24 24'
-            className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
-            fill='currentColor'
-          >
-            <path d='M0,0h24v24H0V0z' fill='none' />
-            <g>
-              <path d='M19.5,3.5L18,2l-1.5,1.5L15,2l-1.5,1.5L12,2l-1.5,1.5L9,2L7.5,3.5L6,2v14H3v3c0,1.66,1.34,3,3,3h12c1.66,0,3-1.34,3-3V2 L19.5,3.5z M15,20H6c-0.55,0-1-0.45-1-1v-1h10V20z M19,19c0,0.55-0.45,1-1,1s-1-0.45-1-1v-3H8V5h11V19z' />
-              <rect height='2' width='6' x='9' y='7' />
-              <rect height='2' width='2' x='16' y='7' />
-              <rect height='2' width='6' x='9' y='10' />
-              <rect height='2' width='2' x='16' y='10' />
-            </g>
-          </svg>
-          {!collapse && (
-            <h4 className='col-span-4 group-hover:underline'>Transactions</h4>
-          )}
-        </li>
+        <Link href='/' passHref>
+          <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
+              />
+            </svg>
+            {!collapse && (
+              <h4 className='col-span-4 group-hover:underline'>My Dashboard</h4>
+            )}
+          </li>
+        </Link>
+        <Link href='transactions' passHref>
+          <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              enableBackground='new 0 0 24 24'
+              viewBox='0 0 24 24'
+              className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
+              fill='currentColor'
+            >
+              <path d='M0,0h24v24H0V0z' fill='none' />
+              <g>
+                <path d='M19.5,3.5L18,2l-1.5,1.5L15,2l-1.5,1.5L12,2l-1.5,1.5L9,2L7.5,3.5L6,2v14H3v3c0,1.66,1.34,3,3,3h12c1.66,0,3-1.34,3-3V2 L19.5,3.5z M15,20H6c-0.55,0-1-0.45-1-1v-1h10V20z M19,19c0,0.55-0.45,1-1,1s-1-0.45-1-1v-3H8V5h11V19z' />
+                <rect height='2' width='6' x='9' y='7' />
+                <rect height='2' width='2' x='16' y='7' />
+                <rect height='2' width='6' x='9' y='10' />
+                <rect height='2' width='2' x='16' y='10' />
+              </g>
+            </svg>
+            {!collapse && (
+              <h4 className='col-span-4 group-hover:underline'>Transactions</h4>
+            )}
+          </li>
+        </Link>
         <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
