@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddTransaction from './AddTransaction';
 
 const HeaderSummary = ({ transaction }) => {
+  const [modal, setModal] = useState(false);
   return (
     <div className='w-5/6 mx-auto mt-10 pl-5 lg:pl-0'>
+      {modal && transaction && <AddTransaction handler={setModal} />}
       <h4 className='text-gray-600 text-xl mb-3'>Current Balance</h4>
       <span className='flex gap-x-4 lg:items-center justify-between mb-3 flex-col md:flex-row gap-y-5'>
         <h2 className='text-3xl md:text-5xl'>$785.98</h2>
@@ -18,8 +21,10 @@ const HeaderSummary = ({ transaction }) => {
             </svg>
             <h5 className='text-base'>6.54%</h5>
           </span>
-
-          <button className='bg-purple-500 text-secondary font-semibold rounded-lg py-2 px-3 hover:bg-purple-700 transform transition duration-500 hover:scale-105 lg:w-44 flex items-center justify-center gap-x-0.5 sm:gap-x-2'>
+          <button
+            className='bg-purple-500 text-secondary font-semibold rounded-lg py-2 px-3 hover:bg-purple-700 transform transition duration-500 hover:scale-105 lg:w-44 flex items-center justify-center gap-x-0.5 sm:gap-x-2'
+            onClick={() => setModal(true)}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-6 w-6'
