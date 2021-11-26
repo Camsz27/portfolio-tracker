@@ -65,8 +65,27 @@ const AddTransaction = ({ handler }) => {
           <h3>Crypto.com Coin</h3>
           <h3>CRO</h3>
         </span>
+        {active === 'transfer' ? (
+          <span className='flex flex-col items-center'>
+            <label htmlFor='transferType'>Transfer</label>
+            <select
+              name='transferType'
+              id='transferType'
+              className='w-5/6 lg:w-3/4 bg-purple-400 rounded-lg'
+            >
+              <option value='in'>Transfer In</option>
+              <option value='out'>Transfer Out</option>
+            </select>
+          </span>
+        ) : (
+          ''
+        )}
         <div className='flex justify-center gap-x-8'>
-          <span className='w-1/3 flex flex-col items-center'>
+          <span
+            className={`flex flex-col items-center ${
+              active === 'transfer' ? 'w-full' : 'w-1/3'
+            }`}
+          >
             <label htmlFor='quantity' className='block'>
               Quantity
             </label>
@@ -74,20 +93,26 @@ const AddTransaction = ({ handler }) => {
               type='number'
               name='quantity'
               id='quantity'
-              className='bg-purple-400 w-28 rounded-lg h-9 border-gray-500'
+              className={`bg-purple-400 rounded-lg h-9 border-gray-500 ${
+                active === 'transfer' ? 'w-4/5 lg:w-3/4' : 'w-28'
+              }`}
             />
           </span>
-          <span className='w-1/3 flex flex-col items-center'>
-            <label htmlFor='price' className='block'>
-              Price Per Coin
-            </label>
-            <input
-              type='number'
-              name='price'
-              id='price'
-              className='bg-purple-400 w-28 rounded-lg h-9 border-gray-500'
-            />
-          </span>
+          {active !== 'transfer' ? (
+            <span className='w-1/3 flex flex-col items-center'>
+              <label htmlFor='price' className='block'>
+                Price Per Coin
+              </label>
+              <input
+                type='number'
+                name='price'
+                id='price'
+                className='bg-purple-400 w-28 rounded-lg h-9 border-gray-500'
+              />
+            </span>
+          ) : (
+            ''
+          )}
         </div>
         <input
           type='date'
@@ -95,10 +120,20 @@ const AddTransaction = ({ handler }) => {
           id='date'
           className='bg-purple-400 h-8 lg:h-12 lg:w-3/4 lg:text-xl rounded-lg self-center my-5 border-gray-500 border-2'
         />
-        <h2 className='ml-7 text-lg lg:ml-14'>Total Spent</h2>
-        <h2 className='text-2xl font-semibold mt-2 mb-4 ml-7 lg:ml-14'>
-          $50000
+        <h2 className='ml-7 text-lg lg:ml-14'>
+          {active === 'buy'
+            ? 'Total Spent'
+            : active === 'sell'
+            ? 'Total Received'
+            : ''}
         </h2>
+        {active !== 'transfer' ? (
+          <h2 className='text-2xl font-semibold mt-2 mb-4 ml-7 lg:ml-14'>
+            $50000
+          </h2>
+        ) : (
+          ''
+        )}
         <button
           type='button'
           className='w-3/4 bg-purple-400 h-10 font-bold rounded-lg self-center hover:bg-purple-700 transform transition duration-500 hover:scale-105'
