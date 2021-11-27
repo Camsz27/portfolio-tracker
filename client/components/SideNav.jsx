@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-const SideNav = () => {
+const SideNav = ({ active }) => {
   const [collapse, setCollapse] = useState(true);
+  //const [active, setActive] = useState('dashboard');
 
   const collapseHandler = () => {
     setCollapse((prev) => !prev);
@@ -65,7 +66,12 @@ const SideNav = () => {
         }`}
       >
         <Link href='/' passHref>
-          <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
+          <li
+            className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
+              active === 'dashboard' ? 'text-purple-800' : ''
+            }`}
+            //onClick={() => setActive('dashboard')}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
@@ -86,7 +92,12 @@ const SideNav = () => {
           </li>
         </Link>
         <Link href='transactions' passHref>
-          <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
+          <li
+            className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
+              active === 'transactions' ? 'text-purple-800' : ''
+            }`}
+            //onClick={() => setActive('transactions')}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               enableBackground='new 0 0 24 24'
@@ -108,7 +119,12 @@ const SideNav = () => {
             )}
           </li>
         </Link>
-        <li className='grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center'>
+        <li
+          className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
+            active === 'settings' ? 'text-purple-800' : ''
+          }`}
+          //onClick={() => setActive('settings')}
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
