@@ -9,7 +9,7 @@ const HeaderSummary = ({ transaction }) => {
       <h4 className='text-gray-600 text-xl mb-3'>Current Balance</h4>
       <span className='flex gap-x-4 lg:items-center justify-between mb-3 flex-col md:flex-row gap-y-5'>
         <h2 className='text-3xl md:text-5xl'>$785.98</h2>
-        <span className='flex flex-grow justify-between'>
+        <span className='flex flex-grow justify-between gap-x-3'>
           <span className='bg-green-500 text-white rounded-lg flex items-center px-1 justify-center md:px-2.5'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
