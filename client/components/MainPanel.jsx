@@ -6,7 +6,7 @@ import HeaderSummary from './HeaderSummary';
 const MainPanel = () => {
   return (
     <div className='flex-grow lg:ml-0 ml-12'>
-      <HeaderSummary />
+      <HeaderSummary mainPanel={true} />
       <Graphs />
       <Assets />
     </div>

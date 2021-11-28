@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
+import AddAsset from './AddAsset';
 import AddTransaction from './AddTransaction';
 
-const HeaderSummary = ({ transaction }) => {
+const HeaderSummary = ({ transaction, mainPanel }) => {
   const [modal, setModal] = useState(false);
+  const [transactionPopUp, setTransactionPopUp] = useState(transaction);
+  const [addPopUp, setAddPopUp] = useState(mainPanel);
   return (
     <div className='w-5/6 mx-auto mt-10 pl-5 lg:pl-0'>
-      {modal && transaction && <AddTransaction handler={setModal} />}
+      {modal && transactionPopUp && <AddTransaction handler={setModal} />}
+      {modal && addPopUp && (
+        <AddAsset
+          handler={setModal}
+          popUp={setTransactionPopUp}
+          main={setAddPopUp}
+        />
+      )}
       <h4 className='text-gray-600 text-xl mb-3'>Current Balance</h4>
       <span className='flex gap-x-4 lg:items-center justify-between mb-3 flex-col md:flex-row gap-y-5'>
         <h2 className='text-3xl md:text-5xl'>$785.98</h2>
