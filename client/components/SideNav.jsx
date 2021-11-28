@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Settings from './Settings';
 
 const SideNav = ({ active }) => {
   const [collapse, setCollapse] = useState(true);
-  //const [active, setActive] = useState('dashboard');
+  const [modal, setModal] = useState(false);
 
   const collapseHandler = () => {
     setCollapse((prev) => !prev);
@@ -15,6 +16,7 @@ const SideNav = ({ active }) => {
         collapse ? 'px-4 md:px-6 lg:px-7' : 'pl-10'
       }`}
     >
+      {modal && <Settings handler={setModal} />}
       <span
         className={`flex justify-between mt-10 mb-64 ${
           collapse ? 'flex-col items-center' : 'pr-7'
@@ -70,7 +72,6 @@ const SideNav = ({ active }) => {
             className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
               active === 'dashboard' ? 'text-purple-800' : ''
             }`}
-            //onClick={() => setActive('dashboard')}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -96,7 +97,6 @@ const SideNav = ({ active }) => {
             className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
               active === 'transactions' ? 'text-purple-800' : ''
             }`}
-            //onClick={() => setActive('transactions')}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -123,7 +123,7 @@ const SideNav = ({ active }) => {
           className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
             active === 'settings' ? 'text-purple-800' : ''
           }`}
-          //onClick={() => setActive('settings')}
+          onClick={() => setModal(true)}
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
