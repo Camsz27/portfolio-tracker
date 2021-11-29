@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AddTransaction from './AddTransaction';
 import DeleteModal from './DeleteModal';
+import EditTransaction from './EditTransaction';
 
 const Transaction = () => {
   const [modal, setModal] = useState(false);
@@ -8,8 +8,8 @@ const Transaction = () => {
   return (
     <div className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'>
       {modal &&
-        (type === 'add' ? (
-          <AddTransaction handler={setModal} />
+        (type === 'edit' ? (
+          <EditTransaction handler={setModal} />
         ) : (
           <DeleteModal handler={setModal} asset={false} />
         ))}
@@ -26,7 +26,13 @@ const Transaction = () => {
       </span>
       <h5 className='hidden md:col-span-1 md:block'>$50.00</h5>
       <span className='hidden md:col-span-1 md:flex gap-x-4'>
-        <button className='transform transition duration-300 hover:scale-125'>
+        <button
+          className='transform transition duration-300 hover:scale-125'
+          onClick={() => {
+            setModal(true);
+            setType('edit');
+          }}
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
