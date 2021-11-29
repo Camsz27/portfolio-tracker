@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddTransaction from './AddTransaction';
+import DeleteModal from './DeleteModal';
 
 const Transaction = () => {
+  const [modal, setModal] = useState(false);
+  const [type, setType] = useState();
   return (
     <div className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'>
+      {modal &&
+        (type === 'add' ? (
+          <AddTransaction handler={setModal} />
+        ) : (
+          <DeleteModal handler={setModal} asset={false} />
+        ))}
       <span className='col-span-2 flex justify-between md:w-5/6'>
         <h3>Crypto.com Coin</h3>
         <h3 className='hidden lg:block text-gray-700'>CRO</h3>
@@ -32,7 +42,13 @@ const Transaction = () => {
             />
           </svg>
         </button>
-        <button className='transform transition duration-300 hover:scale-125'>
+        <button
+          className='transform transition duration-300 hover:scale-125'
+          onClick={() => {
+            setModal(true);
+            setType('delete');
+          }}
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
