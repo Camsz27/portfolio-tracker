@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import DeleteModal from './DeleteModal';
+import Toast from './Toast';
 import EditTransaction from './EditTransaction';
 
 const Transaction = () => {
   const [modal, setModal] = useState(false);
+  const [toast, setToast] = useState(false);
   const [type, setType] = useState();
   return (
-    <div className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'>
+    <div
+      className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'
+      onClick={() => setToast((prev) => !prev)}
+    >
       {modal &&
         (type === 'edit' ? (
           <EditTransaction handler={setModal} />
@@ -71,6 +76,14 @@ const Transaction = () => {
           </svg>
         </button>
       </span>
+      {toast && (
+        <Toast
+          modalHandler={setModal}
+          typeHandler={setType}
+          toastHandler={setToast}
+          asset={false}
+        />
+      )}
     </div>
   );
 };

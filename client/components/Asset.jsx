@@ -104,6 +104,7 @@ const Asset = () => {
           modalHandler={setModal}
           typeHandler={setType}
           toastHandler={setToast}
+          asset={true}
         />
       )}
     </div>
