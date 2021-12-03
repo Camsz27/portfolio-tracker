@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Asset from './Asset';
 
 const Assets = () => {
+  const [active, setActive] = useState();
   return (
     <div className='w-5/6 mx-auto mt-5 pl-5 lg:pl-0'>
       <h2 className='text-3xl mb-5 font-bold'>Assets</h2>
@@ -16,8 +17,8 @@ const Assets = () => {
           <h3 className='hidden md:col-span-1 md:block'>Actions</h3>
         </header>
         <main className='space-y-4'>
-          <Asset />
-          <Asset />
+          <Asset key={1} activeHandler={setActive} id={1} active={active} />
+          <Asset key={2} activeHandler={setActive} id={2} active={active} />
         </main>
       </section>
     </div>

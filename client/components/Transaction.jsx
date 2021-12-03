@@ -3,14 +3,23 @@ import DeleteModal from './DeleteModal';
 import Toast from './Toast';
 import EditTransaction from './EditTransaction';
 
-const Transaction = () => {
+const Transaction = ({ activeHandler, id, active }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [type, setType] = useState();
   return (
     <div
       className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'
-      onClick={() => setToast((prev) => !prev)}
+      onClick={() => {
+        if (active === id || !active) {
+          if (!toast) {
+            activeHandler(id);
+          } else {
+            activeHandler();
+          }
+          setToast((prev) => !prev);
+        }
+      }}
     >
       {modal &&
         (type === 'edit' ? (

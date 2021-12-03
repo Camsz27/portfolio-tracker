@@ -92,7 +92,7 @@ const SideNav = ({ active }) => {
             )}
           </li>
         </Link>
-        <Link href='transactions' passHref>
+        <Link href='/transactions' passHref>
           <li
             className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
               active === 'transactions' ? 'text-purple-800' : ''
