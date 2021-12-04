@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AddAsset = ({ handler, popUp, main }) => {
+  const [search, setSearch] = useState('');
+  const getResults = (e) => {
+    setSearch(e.target.value);
+    console.log(search);
+  };
   return (
     <div className='absolute top-0 left-0 z-10 w-screen h-screen backdrop-filter backdrop-brightness-75 flex items-center md:text-lg'>
       <form
@@ -51,6 +56,8 @@ const AddAsset = ({ handler, popUp, main }) => {
             type='text'
             placeholder='Search'
             className='flex-grow bg-transparent border-0 outline-none ring-0 focus:ring-0 md:text-xl'
+            value={search}
+            onChange={(e) => getResults(e)}
           />
         </span>
         <main className='mt-5 w-5/6 mx-auto'>
