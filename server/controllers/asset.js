@@ -32,3 +32,19 @@ exports.create_asset = [
     });
   },
 ];
+
+exports.delete_asset = (req, res, next) => {
+  Asset.findByIdAndRemove(req.body.id, (err, asset) => {
+    if (err) {
+      return res.status(400).send('The asset was not found');
+    }
+    for (const transaction of asset.transactions) {
+      Transaction.findByIdAndRemove(transaction, (err) => {
+        if (err) {
+          return next(err);
+        }
+      });
+    }
+    res.send('The asset and the corresponding transactions have been deleted');
+  });
+};

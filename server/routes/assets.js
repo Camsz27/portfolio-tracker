@@ -9,6 +9,6 @@ router.get('/', assetController.get_asset);
 router.post('/', assetController.create_asset);
 
 // Delete an asset with the given id and the transactions of that asset
-//router.delete('/', assetController.delete_transaction);
+router.delete('/', assetController.delete_asset);
 
 module.exports = router;
