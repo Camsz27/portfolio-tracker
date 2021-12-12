@@ -3,9 +3,7 @@ var router = express.Router();
 const assetController = require('../controllers/asset');
 
 /* GET assets listing. */
-router.get('/', function (req, res, next) {
-  res.send('This is the transactions one');
-});
+router.get('/', assetController.get_asset);
 
 // Create a new asset
 router.post('/', assetController.create_asset);

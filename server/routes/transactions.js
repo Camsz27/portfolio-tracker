@@ -2,10 +2,8 @@ var express = require('express');
 var router = express.Router();
 const transactionsController = require('../controllers/transaction');
 
-/* GET transactions listing. */
-router.get('/', function (req, res, next) {
-  res.send('This is the transactions one');
-});
+// GET transaction
+router.get('/', transactionsController.get_transaction);
 
 // Create a new transaction
 router.post('/', transactionsController.create_transaction);

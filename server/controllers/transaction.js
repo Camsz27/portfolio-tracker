@@ -1,6 +1,15 @@
 const Transaction = require('../models/transaction');
 const { body, validationResult } = require('express-validator');
 
+exports.get_transaction = (req, res, next) => {
+  Transaction.findById(req.body.id, (err, transaction) => {
+    if (err) {
+      return res.status(400).send('The transaction was not found');
+    }
+    res.send(transaction);
+  });
+};
+
 exports.create_transaction = [
   body('type').trim().isIn(['buy', 'sell', 'transfer']).escape(),
   body('quantity').isFloat({ min: 0 }).escape(),

@@ -2,6 +2,15 @@ const Transaction = require('../models/transaction');
 const Asset = require('../models/asset');
 const { body, validationResult } = require('express-validator');
 
+exports.get_asset = (req, res, next) => {
+  Asset.findById(req.body.id, (err, asset) => {
+    if (err) {
+      return res.status(400).send('The asset was not found');
+    }
+    res.send(asset);
+  });
+};
+
 exports.create_asset = [
   body('coinName').isLength({ min: 0, max: 40 }).trim().escape(),
   body('coinTicker').isLength({ min: 0, max: 10 }).trim().escape(),
