@@ -26,3 +26,19 @@ exports.create_transaction = [
     });
   },
 ];
+
+exports.delete_transaction = [
+  body('id').escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
+    }
+    Transaction.findByIdAndRemove(req.body.id, (err, transaction) => {
+      if (err) {
+        return res.send(err);
+      }
+      res.send('The transaction was deleted');
+    });
+  },
+];

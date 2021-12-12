@@ -10,4 +10,7 @@ router.get('/', function (req, res, next) {
 // Create a new transaction
 router.post('/', transactionsController.create_transaction);
 
+// Delete a transaction with the given id
+router.delete('/', transactionsController.delete_transaction);
+
 module.exports = router;
