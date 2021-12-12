@@ -34,7 +34,7 @@ exports.delete_transaction = [
     if (!errors.isEmpty()) {
       res.status(400).send(errors.array());
     }
-    Transaction.findByIdAndRemove(req.body.id, (err, transaction) => {
+    Transaction.findByIdAndRemove(req.body.id, (err) => {
       if (err) {
         return res.send(err);
       }
