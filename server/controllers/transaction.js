@@ -51,3 +51,32 @@ exports.delete_transaction = [
     });
   },
 ];
+
+exports.update_transaction = [
+  body('id').escape(),
+  body('type').trim().isIn(['buy', 'sell', 'transfer']).escape(),
+  body('quantity').isFloat({ min: 0 }).escape(),
+  body('pricePerCoin').isFloat({ min: 0 }).escape(),
+  body('date').isDate().escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
+    }
+    Transaction.findByIdAndUpdate(
+      req.body.id,
+      {
+        type: req.body.type,
+        quantity: req.body.quantity,
+        pricePerCoin: req.body.pricePerCoin,
+        date: req.body.date,
+      },
+      (err) => {
+        if (err) {
+          return res.status(400).send('There was an error');
+        }
+        res.send('The transaction was updated');
+      }
+    );
+  },
+];

@@ -48,3 +48,29 @@ exports.delete_asset = (req, res, next) => {
     res.send('The asset and the corresponding transactions have been deleted');
   });
 };
+
+exports.update_asset = [
+  body('id').escape(),
+  body('coinName').isLength({ min: 0, max: 40 }).trim().escape(),
+  body('coinTicker').isLength({ min: 0, max: 10 }).trim().escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
+    }
+    Asset.findByIdAndUpdate(
+      req.body.id,
+      {
+        coinName: req.body.coinName,
+        coinTicker: req.body.coinTicker,
+        transactions: req.body.transactions,
+      },
+      (err) => {
+        if (err) {
+          return res.status(400).send('There was an error');
+        }
+        res.send('The asset was updated');
+      }
+    );
+  },
+];
