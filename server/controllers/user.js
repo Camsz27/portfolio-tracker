@@ -4,6 +4,33 @@ const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
+exports.login_user = [
+  body('username').trim().escape(),
+  body('password').trim().escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send(errors.array());
+    }
+    User.find({ username: req.body.username }, (err, user) => {
+      if (err) {
+        return res.status(400).send('There is no user with that username');
+      }
+      if (user.length === 1) {
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+          if (result) {
+            return res.send(user[0]);
+          } else {
+            return res.status(400).send('Incorrect password');
+          }
+        });
+      } else {
+        return res.status(400).send('There is no user with that username');
+      }
+    });
+  },
+];
+
 exports.create_user = [
   body('name').isAlpha().isLength({ min: 3, max: 30 }).trim().escape(),
   body('username').isLength({ min: 3, max: 30 }).trim().escape(),
@@ -17,7 +44,7 @@ exports.create_user = [
     }
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
       if (err) {
-        return res.status(400).send('There was an error hashing the');
+        return res.status(400).send('There was an error hashing the password');
       }
       const user = new User({
         name: req.body.name,
