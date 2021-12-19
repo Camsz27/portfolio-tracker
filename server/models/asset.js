@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const assetSchema = new Schema({
-  coinName: { type: String, required: true },
-  coinTicker: { type: String, required: true },
+  coin: { type: mongoose.SchemaTypes.ObjectId, ref: 'Coin' },
   transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
 });
 

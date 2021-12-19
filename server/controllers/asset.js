@@ -11,27 +11,22 @@ exports.get_asset = (req, res, next) => {
   });
 };
 
-exports.create_asset = [
-  body('coinName').isLength({ min: 0, max: 40 }).trim().escape(),
-  body('coinTicker').isLength({ min: 0, max: 10 }).trim().escape(),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).send(errors.array());
+exports.create_asset = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).send(errors.array());
+  }
+  const asset = new Asset({
+    coin: req.body.coin,
+    transactions: req.body.transactions,
+  });
+  asset.save((err) => {
+    if (err) {
+      return next(err);
     }
-    const asset = new Asset({
-      coinName: req.body.coinName,
-      coinTicker: req.body.coinTicker,
-      transactions: req.body.transactions,
-    });
-    asset.save((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.send('The asset was added');
-    });
-  },
-];
+    res.send('The asset was added');
+  });
+};
 
 exports.delete_asset = (req, res, next) => {
   Asset.findByIdAndRemove(req.body.id, (err, asset) => {
@@ -49,28 +44,22 @@ exports.delete_asset = (req, res, next) => {
   });
 };
 
-exports.update_asset = [
-  body('id').escape(),
-  body('coinName').isLength({ min: 0, max: 40 }).trim().escape(),
-  body('coinTicker').isLength({ min: 0, max: 10 }).trim().escape(),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).send(errors.array());
-    }
-    Asset.findByIdAndUpdate(
-      req.body.id,
-      {
-        coinName: req.body.coinName,
-        coinTicker: req.body.coinTicker,
-        transactions: req.body.transactions,
-      },
-      (err) => {
-        if (err) {
-          return res.status(400).send('There was an error');
-        }
-        res.send('The asset was updated');
+exports.update_asset = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).send(errors.array());
+  }
+  Asset.findByIdAndUpdate(
+    req.body.id,
+    {
+      coin: req.body.coin,
+      transactions: req.body.transactions,
+    },
+    (err) => {
+      if (err) {
+        return res.status(400).send('There was an error');
       }
-    );
-  },
-];
+      res.send('The asset was updated');
+    }
+  );
+};
