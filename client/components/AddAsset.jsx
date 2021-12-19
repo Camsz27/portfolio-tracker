@@ -1,11 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SearchResult from './SearchResult';
+
+const trendingCoins = [
+  {
+    img: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579',
+    name: 'Bitcoin',
+    symbol: 'BTC',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
+    name: 'Ethereum',
+    symbol: 'ETH',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
+    name: 'Binance Coin',
+    symbol: 'BNB',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/325/small/Tether-logo.png?1598003707',
+    name: 'Tether',
+    symbol: 'USDT',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/4128/small/Solana.jpg?1635329178',
+    name: 'Solana',
+    symbol: 'SOL',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/975/small/cardano.png?1547034860',
+    name: 'Cardano',
+    symbol: 'ADA',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389',
+    name: 'USD Coin',
+    symbol: 'USDC',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/8284/small/luna1557227471663.png?1567147072',
+    name: 'Terra',
+    symbol: 'LUNA',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png?1604021818',
+    name: 'Avalanche',
+    symbol: 'AVAX',
+    id: '61bf54123adc8e8b5de92187',
+  },
+  {
+    img: 'https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png?1624446912',
+    name: 'Polygon',
+    symbol: 'MATIC',
+    id: '61bf54123adc8e8b5de92187',
+  },
+];
 
 const AddAsset = ({ handler, popUp, main }) => {
-  const [search, setSearch] = useState('');
-  const getResults = (e) => {
-    setSearch(e.target.value);
-    console.log(search);
+  //const [search, setSearch] = useState('');
+  const [result, setResult] = useState([]);
+  const [initial, setInitial] = useState(true);
+  const [initialData, setInitialData] = useState([]);
+
+  const fetchCoins = async () => {
+    const data = await fetch('http://localhost:27182/information/coins');
+    const result = await data.json();
+    setInitialData(result);
   };
+
+  useEffect(() => {
+    fetchCoins();
+  }, []);
+
+  const getResults = (e) => {
+    const search = e.target.value;
+    const filterCoins = initialData.filter((coin) =>
+      coin.name.toLowerCase().includes(search.toLowerCase())
+    );
+    console.log(filterCoins);
+    setResult(filterCoins);
+    // setResult(filterCoins.slice(0, 9));
+    setInitial(false);
+  };
+
   return (
     <div className='absolute top-0 left-0 z-10 w-screen h-screen backdrop-filter backdrop-brightness-75 flex items-center md:text-lg'>
       <form
@@ -56,38 +141,18 @@ const AddAsset = ({ handler, popUp, main }) => {
             type='text'
             placeholder='Search'
             className='flex-grow bg-transparent border-0 outline-none ring-0 focus:ring-0 md:text-xl'
-            value={search}
-            onChange={(e) => getResults(e)}
+            onChange={getResults}
           />
         </span>
-        <main className='mt-5 w-5/6 mx-auto'>
-          <span
-            className='flex items-center gap-x-5 hover:bg-purple-700 rounded-md px-3 py-2 cursor-pointer'
-            onClick={() => {
-              popUp(true);
-              main(false);
-            }}
-          >
-            <div className='h-8 w-8 bg-red-400 rounded-full'></div>
-            <h1 className='font-bold'>Bitcoin</h1>
-            <h3>BTC</h3>
-            <span className='flex-grow'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='h-6 w-6 float-right'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M9 5l7 7-7 7'
-                />
-              </svg>
-            </span>
-          </span>
+        <main className='mt-5 w-5/6 mx-auto max-h-96 overflow-y-scroll'>
+          {initial &&
+            trendingCoins.map((coin, index) => (
+              <SearchResult popUp={popUp} main={main} key={index} coin={coin} />
+            ))}
+          {!initial &&
+            result.map((coin, index) => (
+              <SearchResult popUp={popUp} main={main} key={index} coin={coin} />
+            ))}
         </main>
       </form>
     </div>
