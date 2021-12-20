@@ -93,3 +93,12 @@ exports.update_user = [
     );
   },
 ];
+
+exports.get_user = (req, res, next) => {
+  User.findById(req.params.id, (err, result) => {
+    if (err) {
+      return next(err);
+    }
+    res.send(result);
+  });
+};

@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddTransaction from './AddTransaction';
 import Toast from './Toast';
 import DeleteModal from './DeleteModal';
+import Image from 'next/image';
 
 const Asset = ({ activeHandler, id, active }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [type, setType] = useState();
+  const [transactions, setTransactions] = useState([]);
+  const [coin, setCoin] = useState([]);
+  const [coinInformation, setCoinInformation] = useState();
+
+  const fetchCoinInformation = async (coin) => {
+    const data = await fetch(`http://localhost:27182/information/${coin}`);
+    const response = await data.json();
+    setCoinInformation(response);
+  };
+
+  const fetchUserAsset = async () => {
+    const data = await fetch(`http://localhost:27182/assets/${id}`);
+    const response = await data.json();
+    console.log(response);
+    setTransactions(response.transactions);
+    setCoin(response.coin);
+  };
+  useEffect(() => {
+    fetchUserAsset();
+    fetchCoinInformation(coin);
+  }, [coin]);
+
+  console.log(coinInformation);
+
+  if (!coinInformation) {
+    return <div>Loading</div>;
+  }
+
   return (
     <div
       className='grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 items-center border-b border-gray-600 mb-3 text-sm md:text-base'
@@ -27,21 +56,60 @@ const Asset = ({ activeHandler, id, active }) => {
         ) : (
           <DeleteModal handler={setModal} asset={true} />
         ))}
-      <span className='col-span-2 flex justify-between md:w-5/6'>
-        <h3>Crypto.com Coin</h3>
-        <h3 className='hidden lg:block text-gray-700'>CRO</h3>
+      <span className='col-span-2 flex md:w-5/6 items-center space-x-4'>
+        <div className='hidden md:block'>
+          <Image
+            src={coinInformation.image}
+            height={30}
+            width={30}
+            alt='coin logo'
+          />
+        </div>
+        <h3>{coinInformation.name}</h3>
+        <h3 className='hidden lg:block text-gray-700'>
+          {coinInformation.symbol.toUpperCase()}
+        </h3>
       </span>
-      <h5 className='col-span-1'>$0.0557</h5>
-      <span className='hidden lg:col-span-1 text-green-500 lg:flex items-center'>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 24 24'
-          className='fill-current w-8 h-8'
-        >
-          <path d='M0 0h24v24H0V0z' fill='none' />
-          <path d='M7 14l5-5 5 5H7z' />
-        </svg>
-        <h3>14.42%</h3>
+      <h5 className='col-span-1'>${coinInformation.price}</h5>
+      <span
+        className={`hidden lg:col-span-1 lg:flex items-center ${
+          coinInformation.variationPercentage >= 0
+            ? 'text-green-500'
+            : 'text-red-500'
+        }`}
+      >
+        {coinInformation.variationPercentage >= 0 ? (
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className='h-7 w-7'
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M5 15l7-7 7 7'
+            />
+          </svg>
+        ) : (
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className='h-7 w-7'
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M19 9l-7 7-7-7'
+            />
+          </svg>
+        )}
+        <h3>{coinInformation.variationPercentage.toPrecision(2)}%</h3>
       </span>
       <span className='col-span-1 ml-3'>
         <h3>$903.4</h3>
@@ -49,16 +117,47 @@ const Asset = ({ activeHandler, id, active }) => {
       </span>
       <h5 className='hidden lg:col-span-1 lg:block ml-8'>$0.0557</h5>
       <span className='hidden md:col-span-1 md:flex flex-col items-start'>
-        <h3 className='w-5/6 pl-2.5'>+ $903.4</h3>
-        <span className='text-green-500 flex items-center w-5/6 text-sm'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            className='fill-current w-8 h-8'
-          >
-            <path d='M0 0h24v24H0V0z' fill='none' />
-            <path d='M7 14l5-5 5 5H7z' />
-          </svg>
+        <h3 className='w-5/6 pl-2.5'>
+          {coinInformation.variationPercentage >= 0 ? '+' : '-'} $903.4
+        </h3>
+        <span
+          className={`flex items-center w-5/6 text-sm ${
+            coinInformation.variationPercentage >= 0
+              ? 'text-green-500'
+              : 'text-red-500'
+          }`}
+        >
+          {coinInformation.variationPercentage >= 0 ? (
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M5 15l7-7 7 7'
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M19 9l-7 7-7-7'
+              />
+            </svg>
+          )}
           <h3>14.42%</h3>
         </span>
       </span>

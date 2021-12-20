@@ -3,7 +3,7 @@ const Asset = require('../models/asset');
 const { body, validationResult } = require('express-validator');
 
 exports.get_asset = (req, res, next) => {
-  Asset.findById(req.body.id, (err, asset) => {
+  Asset.findById(req.params.id, (err, asset) => {
     if (err) {
       return res.status(400).send('The asset was not found');
     }
