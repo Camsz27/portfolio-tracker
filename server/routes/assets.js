@@ -11,6 +11,8 @@ router.delete('/', assetController.delete_asset);
 // Updates an asset with the given id
 router.put('/', assetController.update_asset);
 
+router.get('/', assetController.trial);
+
 /* GET assets listing. */
 router.get('/:id', assetController.get_asset);
 

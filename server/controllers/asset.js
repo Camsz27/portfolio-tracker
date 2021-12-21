@@ -63,3 +63,18 @@ exports.update_asset = (req, res, next) => {
     }
   );
 };
+
+exports.trial = (req, res, next) => {
+  Asset.findOne((err, result) => {
+    if (err) {
+      return res.send('There was an error');
+    }
+    let quantity = 0;
+    let averagePrice = 0;
+    result.getQuantity((result) => console.log('Quantity is:', result));
+    result.getAveragePrice((result) =>
+      console.log('Average price is:', result)
+    );
+    res.json({ quantity, averagePrice });
+  });
+};

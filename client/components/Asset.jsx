@@ -118,7 +118,7 @@ const Asset = ({ activeHandler, id, active }) => {
       <h5 className='hidden lg:col-span-1 lg:block ml-8'>$0.0557</h5>
       <span className='hidden md:col-span-1 md:flex flex-col items-start'>
         <h3 className='w-5/6 pl-2.5'>
-          {coinInformation.variationPercentage >= 0 ? '+' : '-'} $903.4
+          {coinInformation.variationPercentage >= 0 ? '+' : '−'} $903.4
         </h3>
         <span
           className={`flex items-center w-5/6 text-sm ${

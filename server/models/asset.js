@@ -6,12 +6,27 @@ const assetSchema = new Schema({
   transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
 });
 
-assetSchema.virtual('quantity').get(() => {
-  return 25;
-});
+assetSchema.methods.getQuantity = function (cb) {
+  this.populate('transactions')
+    .then((result) =>
+      result.transactions.reduce(
+        (partial, transaction) => partial + transaction.quantity,
+        0
+      )
+    )
+    .then((result) => cb(result));
+};
 
-assetSchema.virtual('averagePrice').get(() => {
-  return 10;
-});
+assetSchema.methods.getAveragePrice = function (cb) {
+  this.populate('transactions')
+    .then((result) =>
+      result.transactions.reduce(
+        (partial, transaction) => partial + transaction.pricePerCoin,
+        0
+      )
+    )
+    .then((result) => result / this.transactions.length)
+    .then((result) => cb(result));
+};
 
 module.exports = mongoose.model('Asset', assetSchema);

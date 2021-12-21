@@ -95,10 +95,20 @@ exports.update_user = [
 ];
 
 exports.get_user = (req, res, next) => {
-  User.findById(req.params.id, (err, result) => {
-    if (err) {
-      return next(err);
-    }
-    res.send(result);
-  });
+  User.findById(req.params.id)
+    .populate([
+      {
+        path: 'assets',
+        populate: [
+          { path: 'coin', model: 'Coin' },
+          { path: 'transactions', model: 'Transaction' },
+        ],
+      },
+    ])
+    .exec((err, result) => {
+      if (err) {
+        return res.send(err);
+      }
+      res.json({ id: result._id, name: result.name, assets: result.assets });
+    });
 };

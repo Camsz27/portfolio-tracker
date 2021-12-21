@@ -8,6 +8,7 @@ router.post('/', userController.create_user);
 // Update the user with the given id
 router.put('/', userController.update_user);
 
+// Gets all the information to populate the main page
 router.get('/:id', userController.get_user);
 
 // Login the user
