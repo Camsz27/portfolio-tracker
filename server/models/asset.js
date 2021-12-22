@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const transaction = require('./transaction');
 const Schema = mongoose.Schema;
 
 const assetSchema = new Schema({
@@ -6,27 +7,22 @@ const assetSchema = new Schema({
   transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
 });
 
-assetSchema.methods.getQuantity = function (cb) {
-  this.populate('transactions')
-    .then((result) =>
-      result.transactions.reduce(
-        (partial, transaction) => partial + transaction.quantity,
-        0
-      )
-    )
-    .then((result) => cb(result));
+assetSchema.methods.getQuantity = async function () {
+  let data = await this.populate('transactions');
+  let ans = data.transactions.reduce(
+    (partial, transaction) => partial + transaction.quantity,
+    0
+  );
+  return ans;
 };
 
-assetSchema.methods.getAveragePrice = function (cb) {
-  this.populate('transactions')
-    .then((result) =>
-      result.transactions.reduce(
-        (partial, transaction) => partial + transaction.pricePerCoin,
-        0
-      )
-    )
-    .then((result) => result / this.transactions.length)
-    .then((result) => cb(result));
+assetSchema.methods.getAveragePrice = async function () {
+  let data = await this.populate('transactions');
+  let ans = data.transactions.reduce(
+    (partial, transaction) => partial + transaction.pricePerCoin,
+    0
+  );
+  return ans / this.transactions.length;
 };
 
 module.exports = mongoose.model('Asset', assetSchema);

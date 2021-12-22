@@ -65,16 +65,14 @@ exports.update_asset = (req, res, next) => {
 };
 
 exports.trial = (req, res, next) => {
-  Asset.findOne((err, result) => {
+  Asset.findOne(async (err, result) => {
     if (err) {
       return res.send('There was an error');
     }
-    let quantity = 0;
-    let averagePrice = 0;
-    result.getQuantity((result) => console.log('Quantity is:', result));
-    result.getAveragePrice((result) =>
-      console.log('Average price is:', result)
-    );
+    const [quantity, averagePrice] = await Promise.all([
+      result.getQuantity(),
+      result.getAveragePrice(),
+    ]);
     res.json({ quantity, averagePrice });
   });
 };
