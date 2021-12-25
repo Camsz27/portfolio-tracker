@@ -105,10 +105,23 @@ exports.get_user = (req, res, next) => {
         ],
       },
     ])
-    .exec((err, result) => {
+    .exec(async (err, result) => {
       if (err) {
         return res.send(err);
       }
-      res.json({ id: result._id, name: result.name, assets: result.assets });
+      let assets = [];
+      for (const asset of result.assets) {
+        const [quantity, averagePrice] = await Promise.all([
+          asset.getQuantity(),
+          asset.getAveragePrice(),
+        ]);
+        assets.push({
+          id: asset._id,
+          coin: asset.coin,
+          quantity: quantity,
+          averagePrice: averagePrice,
+        });
+      }
+      res.json({ id: result._id, name: result.name, assets: assets });
     });
 };
