@@ -25,4 +25,12 @@ assetSchema.methods.getAveragePrice = async function () {
   return ans / this.transactions.length;
 };
 
+assetSchema.methods.deleteTransaction = function (transactionId) {
+  const transactions = this.transactions.filter(
+    (transaction) => transaction.toString() !== transactionId.toString()
+  );
+  this.transactions = transactions;
+  this.save();
+};
+
 module.exports = mongoose.model('Asset', assetSchema);

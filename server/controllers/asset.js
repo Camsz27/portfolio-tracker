@@ -44,35 +44,53 @@ exports.delete_asset = (req, res, next) => {
   });
 };
 
-exports.update_asset = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(400).send(errors.array());
-  }
-  Asset.findByIdAndUpdate(
-    req.body.id,
-    {
-      coin: req.body.coin,
-      transactions: req.body.transactions,
-    },
-    (err) => {
-      if (err) {
-        return res.status(400).send('There was an error');
+// Add transaction to a given asset
+exports.update_asset = [
+  body('type').trim().isIn(['buy', 'sell', 'transfer']).escape(),
+  body('quantity').isFloat({ min: 0 }).escape(),
+  body('pricePerCoin').isFloat({ min: 0 }).escape(),
+  body('date').isDate().escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
+    }
+    const transaction = new Transaction({
+      type: req.body.type,
+      quantity: req.body.quantity,
+      pricePerCoin: req.body.pricePerCoin,
+      date: req.body.date,
+    });
+    Asset.findByIdAndUpdate(
+      req.body.id,
+      {
+        $push: { transactions: transaction },
+      },
+      (err) => {
+        if (err) {
+          return res.status(400).send('There was an error');
+        }
+        res.send('The asset was updated');
       }
-      res.send('The asset was updated');
-    }
-  );
-};
+    );
+  },
+];
 
-exports.trial = (req, res, next) => {
-  Asset.findOne(async (err, result) => {
-    if (err) {
-      return res.send('There was an error');
+exports.delete_transaction_from_asset = [
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send(errors.array());
     }
-    const [quantity, averagePrice] = await Promise.all([
-      result.getQuantity(),
-      result.getAveragePrice(),
-    ]);
-    res.json({ quantity, averagePrice });
-  });
-};
+    try {
+      const asset = await Asset.findById(req.body.assetId);
+      asset.deleteTransaction(req.body.transactionId);
+      const transaction = await Transaction.findByIdAndDelete(
+        req.body.transactionId
+      );
+      res.send(transaction);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  },
+];
