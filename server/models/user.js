@@ -15,4 +15,12 @@ const userSchema = new Schema({
   },
 });
 
+userSchema.methods.deleteAsset = function (assetId) {
+  const assets = this.assets.filter(
+    (asset) => asset.toString() !== assetId.toString()
+  );
+  this.assets = assets;
+  this.save();
+};
+
 module.exports = mongoose.model('User', userSchema);

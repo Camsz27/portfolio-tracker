@@ -125,3 +125,25 @@ exports.get_user = (req, res, next) => {
       res.json({ id: result._id, name: result.name, assets: assets });
     });
 };
+
+exports.delete_asset_from_user = [
+  async (req, res, next) => {
+    const user = await User.findById(req.body.userId);
+    user.deleteAsset(req.body.assetId);
+    Asset.findByIdAndRemove(req.body.assetId, (err, asset) => {
+      if (err) {
+        return res.status(400).send('The asset was not found');
+      }
+      for (const transaction of asset.transactions) {
+        Transaction.findByIdAndRemove(transaction, (err) => {
+          if (err) {
+            return next(err);
+          }
+        });
+      }
+      res.send(
+        'The asset and the corresponding transactions have been deleted'
+      );
+    });
+  },
+];

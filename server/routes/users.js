@@ -14,4 +14,7 @@ router.get('/:id', userController.get_user);
 // Login the user
 router.post('/login', userController.login_user);
 
+// Deletes the asset with the given id
+router.delete('/', userController.delete_asset_from_user);
+
 module.exports = router;
