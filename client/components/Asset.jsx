@@ -3,10 +3,12 @@ import AddTransaction from './AddTransaction';
 import Toast from './Toast';
 import DeleteModal from './DeleteModal';
 import Image from 'next/image';
+import Message from './Message';
 
 const Asset = ({ activeHandler, id, active, asset }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [type, setType] = useState();
   const [coin, setCoin] = useState(asset.coin._id);
   const [coinInformation, setCoinInformation] = useState();
@@ -39,9 +41,15 @@ const Asset = ({ activeHandler, id, active, asset }) => {
         }
       }}
     >
+      {success && <Message />}
       {modal &&
         (type === 'add' ? (
-          <AddTransaction handler={setModal} asset={coinInformation} id={id} />
+          <AddTransaction
+            handler={setModal}
+            asset={coinInformation}
+            id={id}
+            successHandler={setSuccess}
+          />
         ) : (
           <DeleteModal handler={setModal} asset={true} />
         ))}

@@ -1,6 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Router from 'next/router';
 
-const EditTransaction = ({ handler, type }) => {
+const EditTransaction = ({
+  handler,
+  type,
+  amount,
+  price,
+  dateAdded,
+  id,
+  successHandler,
+  changeType,
+}) => {
+  const [quantity, setQuantity] = useState(amount);
+  const [pricePerCoin, setPricePerCoin] = useState(price);
+  const [date, setDate] = useState(dateAdded.toISOString().substr(0, 10));
+  const editTransaction = async () => {
+    const transactionRequest = {
+      id,
+      type: 'buy',
+      quantity,
+      pricePerCoin,
+      date,
+    };
+    const request = await fetch('http://localhost:27182/transactions', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transactionRequest),
+    });
+    if (request.status === 200) {
+      handler(false);
+      successHandler(true);
+      Router.reload();
+      changeType('edit');
+    }
+  };
   return (
     <div className='absolute top-0 left-0 z-10 w-screen h-screen backdrop-filter backdrop-brightness-75 flex items-center md:text-lg'>
       <form
@@ -38,6 +73,8 @@ const EditTransaction = ({ handler, type }) => {
               name='quantity'
               id='quantity'
               className={`bg-purple-400 rounded-lg h-9 border-gray-500 w-5/6`}
+              defaultValue={quantity}
+              onChange={(e) => setQuantity(e.currentTarget.value)}
             />
           </span>
           <span className='flex flex-col items-center text-sm md:text-lg'>
@@ -47,6 +84,8 @@ const EditTransaction = ({ handler, type }) => {
               name='price'
               id='price'
               className='bg-purple-400 rounded-lg h-9 border-gray-500 w-5/6'
+              defaultValue={price}
+              onChange={(e) => setPricePerCoin(e.currentTarget.value)}
             />
           </span>
         </div>
@@ -55,16 +94,19 @@ const EditTransaction = ({ handler, type }) => {
           name='date'
           id='date'
           className='bg-purple-400 h-8 lg:h-12 lg:w-3/4 lg:text-xl rounded-lg self-center my-5 border-gray-500 border-2'
+          defaultValue={date}
+          onChange={(e) => setDate(e.currentTarget.value)}
         />
         <h2 className='ml-7 text-lg lg:ml-14'>
           {type === 'buy' ? 'Total Spent' : 'Total Received'}
         </h2>
         <h2 className='text-3xl font-semibold mt-2 mb-4 ml-7 lg:ml-14'>
-          $50000
+          ${quantity * pricePerCoin}
         </h2>
         <button
           type='button'
           className='w-3/4 bg-purple-400 h-10 font-bold rounded-lg self-center hover:bg-purple-700 transform transition duration-500 hover:scale-105'
+          onClick={editTransaction}
         >
           Edit Transaction
         </button>

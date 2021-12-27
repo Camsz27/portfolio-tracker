@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import DeleteModal from './DeleteModal';
 import Toast from './Toast';
 import EditTransaction from './EditTransaction';
+import Message from './Message';
 
 const Transaction = ({ activeHandler, id, active, data }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [changeType, setChangeType] = useState();
   const [type, setType] = useState();
   let date = new Date(data.date);
   return (
@@ -22,9 +25,18 @@ const Transaction = ({ activeHandler, id, active, data }) => {
         }
       }}
     >
+      {success && <Message type={changeType} />}
       {modal &&
         (type === 'edit' ? (
-          <EditTransaction handler={setModal} />
+          <EditTransaction
+            handler={setModal}
+            amount={data.quantity}
+            price={data.pricePerCoin}
+            dateAdded={date}
+            id={id}
+            successHandler={setSuccess}
+            changeType={setChangeType}
+          />
         ) : (
           <DeleteModal handler={setModal} asset={false} />
         ))}

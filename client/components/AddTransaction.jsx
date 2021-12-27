@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Message from './Message';
 
-const AddTransaction = ({ handler, asset, id }) => {
+const AddTransaction = ({ handler, asset, id, successHandler }) => {
   const [active, setActive] = useState('buy');
   const [quantity, setQuantity] = useState(0);
   const [pricePerCoin, setPricePerCoin] = useState(0);
@@ -24,6 +25,7 @@ const AddTransaction = ({ handler, asset, id }) => {
     });
     if (request.status === 200) {
       handler(false);
+      successHandler(true);
     }
   };
   return (
@@ -55,7 +57,7 @@ const AddTransaction = ({ handler, asset, id }) => {
             </svg>
           </button>
         </span>
-        <span className='flex bg-purple-400 rounded-lg mx-7 py-0.5 px-2 justify-between lg:w-2/3 lg:mx-auto lg:px-4'>
+        <span className='flex bg-purple-400 rounded-lg mx-7 py-0.5 px-2 justify-between lg:w-2/3 lg:mx-auto lg:px-1'>
           <button
             type='button'
             className={`${
@@ -87,7 +89,6 @@ const AddTransaction = ({ handler, asset, id }) => {
           </button>
         </span>
         <span className='flex justify-between items-center w-max gap-x-4 mx-auto my-4'>
-          {/* <div className='h-5 w-5 bg-gray-700 rounded-full'></div> */}
           <Image src={asset.image} height={42} width={42} alt='coin logo' />
           <h3>{asset.name}</h3>
           <h3>{asset.symbol.toUpperCase()}</h3>
@@ -116,7 +117,7 @@ const AddTransaction = ({ handler, asset, id }) => {
             <label
               htmlFor='quantity'
               className={`block ${
-                active === 'transfer' ? '' : 'text-sm md:text-lg'
+                active === 'transfer' ? '' : 'text-sm md:text-base 2xl:text-lg'
               }`}
             >
               Quantity
@@ -133,7 +134,7 @@ const AddTransaction = ({ handler, asset, id }) => {
             />
           </span>
           {active !== 'transfer' ? (
-            <span className='w-1/3 flex flex-col items-center text-sm md:text-lg'>
+            <span className='w-1/3 flex flex-col items-center text-sm md:text-base 2xl:text-lg'>
               <label htmlFor='price' className='block'>
                 Price Per Coin
               </label>
