@@ -1,5 +1,6 @@
 const Transaction = require('../models/transaction');
 const Asset = require('../models/asset');
+const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 
 exports.get_asset = (req, res, next) => {
@@ -11,7 +12,7 @@ exports.get_asset = (req, res, next) => {
   });
 };
 
-exports.create_asset = (req, res, next) => {
+exports.create_asset = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400).send(errors.array());
@@ -20,10 +21,12 @@ exports.create_asset = (req, res, next) => {
     coin: req.body.coin,
     transactions: req.body.transactions,
   });
-  asset.save((err) => {
+  asset.save(async (err, asset) => {
     if (err) {
       return next(err);
     }
+    const user = await User.findById(req.body.userId);
+    user.addAsset(asset);
     res.send('The asset was added');
   });
 };

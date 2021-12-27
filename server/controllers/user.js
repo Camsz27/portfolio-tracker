@@ -126,24 +126,45 @@ exports.get_user = (req, res, next) => {
     });
 };
 
-exports.delete_asset_from_user = [
-  async (req, res, next) => {
-    const user = await User.findById(req.body.userId);
-    user.deleteAsset(req.body.assetId);
-    Asset.findByIdAndRemove(req.body.assetId, (err, asset) => {
-      if (err) {
-        return res.status(400).send('The asset was not found');
-      }
-      for (const transaction of asset.transactions) {
-        Transaction.findByIdAndRemove(transaction, (err) => {
-          if (err) {
-            return next(err);
-          }
-        });
-      }
-      res.send(
-        'The asset and the corresponding transactions have been deleted'
-      );
+exports.delete_asset_from_user = async (req, res, next) => {
+  const user = await User.findById(req.body.userId);
+  user.deleteAsset(req.body.assetId);
+  Asset.findByIdAndRemove(req.body.assetId, (err, asset) => {
+    if (err) {
+      return res.status(400).send('The asset was not found');
+    }
+    for (const transaction of asset.transactions) {
+      Transaction.findByIdAndRemove(transaction, (err) => {
+        if (err) {
+          return next(err);
+        }
+      });
+    }
+    res.send('The asset and the corresponding transactions have been deleted');
+  });
+};
+
+exports.get_user_transactions = async (req, res, next) => {
+  const user = await User.findById(req.params.id).populate([
+    {
+      path: 'assets',
+      populate: [
+        { path: 'coin', model: 'Coin' },
+        { path: 'transactions', model: 'Transaction' },
+      ],
+    },
+  ]);
+  const assets = user.assets;
+  let transactions = [];
+  for (const asset of assets) {
+    const coin = asset.coin;
+    asset.transactions.map((transaction) => {
+      const newTransaction = { ...transaction._doc, coin: coin };
+      // console.log(newTransaction);
+      transactions.push(newTransaction);
     });
-  },
-];
+  }
+  transactions.sort((a, b) => b.date - a.date);
+  // console.log(transactions);
+  res.send(transactions);
+};

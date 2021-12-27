@@ -23,4 +23,10 @@ userSchema.methods.deleteAsset = function (assetId) {
   this.save();
 };
 
+userSchema.methods.addAsset = function (assetId) {
+  const assets = [...this.assets, assetId];
+  this.assets = assets;
+  this.save();
+};
+
 module.exports = mongoose.model('User', userSchema);
