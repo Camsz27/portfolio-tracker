@@ -41,7 +41,7 @@ const Asset = ({ activeHandler, id, active, asset }) => {
     >
       {modal &&
         (type === 'add' ? (
-          <AddTransaction handler={setModal} />
+          <AddTransaction handler={setModal} asset={coinInformation} id={id} />
         ) : (
           <DeleteModal handler={setModal} asset={true} />
         ))}

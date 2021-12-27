@@ -64,6 +64,7 @@ exports.update_asset = [
       pricePerCoin: req.body.pricePerCoin,
       date: req.body.date,
     });
+
     Asset.findByIdAndUpdate(
       req.body.id,
       {
@@ -73,7 +74,12 @@ exports.update_asset = [
         if (err) {
           return res.status(400).send('There was an error');
         }
-        res.send('The asset was updated');
+        transaction.save((err) => {
+          if (err) {
+            return next(err);
+          }
+          res.send('The transaction was added and the asset updated');
+        });
       }
     );
   },
