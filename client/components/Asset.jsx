@@ -4,12 +4,11 @@ import Toast from './Toast';
 import DeleteModal from './DeleteModal';
 import Image from 'next/image';
 
-const Asset = ({ activeHandler, id, active }) => {
+const Asset = ({ activeHandler, id, active, asset }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [type, setType] = useState();
-  const [transactions, setTransactions] = useState([]);
-  const [coin, setCoin] = useState([]);
+  const [coin, setCoin] = useState(asset.coin._id);
   const [coinInformation, setCoinInformation] = useState();
 
   const fetchCoinInformation = async (coin) => {
@@ -18,22 +17,12 @@ const Asset = ({ activeHandler, id, active }) => {
     setCoinInformation(response);
   };
 
-  const fetchUserAsset = async () => {
-    const data = await fetch(`http://localhost:27182/assets/${id}`);
-    const response = await data.json();
-    console.log(response);
-    setTransactions(response.transactions);
-    setCoin(response.coin);
-  };
   useEffect(() => {
-    fetchUserAsset();
     fetchCoinInformation(coin);
   }, [coin]);
 
-  console.log(coinInformation);
-
   if (!coinInformation) {
-    return <div>Loading</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -112,22 +101,34 @@ const Asset = ({ activeHandler, id, active }) => {
         <h3>{coinInformation.variationPercentage.toPrecision(2)}%</h3>
       </span>
       <span className='col-span-1 ml-3'>
-        <h3>$903.4</h3>
-        <h5 className='text-gray-700 text-sm'>$903.4</h5>
+        <h3>${(asset.quantity * coinInformation.price).toFixed(2)}</h3>
+        <h5 className='text-gray-700 text-sm'>{`${
+          asset.quantity
+        } ${asset.coin.symbol.toUpperCase()}`}</h5>
       </span>
-      <h5 className='hidden lg:col-span-1 lg:block ml-8'>$0.0557</h5>
+      <h5 className='hidden lg:col-span-1 lg:block ml-8'>
+        ${asset.averagePrice.toFixed(2)}
+      </h5>
       <span className='hidden md:col-span-1 md:flex flex-col items-start'>
         <h3 className='w-5/6 pl-2.5'>
-          {coinInformation.variationPercentage >= 0 ? '+' : '−'} $903.4
+          {asset.quantity * (coinInformation.price - asset.averagePrice) >= 0
+            ? '+'
+            : '−'}{' '}
+          $
+          {(
+            asset.quantity *
+            (coinInformation.price - asset.averagePrice)
+          ).toFixed(2)}
         </h3>
         <span
           className={`flex items-center w-5/6 text-sm ${
-            coinInformation.variationPercentage >= 0
+            asset.quantity * (coinInformation.price - asset.averagePrice) >= 0
               ? 'text-green-500'
               : 'text-red-500'
           }`}
         >
-          {coinInformation.variationPercentage >= 0 ? (
+          {asset.quantity * (coinInformation.price - asset.averagePrice) >=
+          0 ? (
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-6 w-6'
@@ -158,7 +159,14 @@ const Asset = ({ activeHandler, id, active }) => {
               />
             </svg>
           )}
-          <h3>14.42%</h3>
+          <h3>
+            {(
+              ((asset.quantity * (coinInformation.price - asset.averagePrice)) /
+                (asset.quantity * asset.averagePrice)) *
+              100
+            ).toFixed(2)}
+            %
+          </h3>
         </span>
       </span>
       <span className='hidden md:col-span-1 md:flex gap-x-4'>

@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Asset from './Asset';
 
-const userId = '61b68c7e91ad3a87651ddf6e';
-
-const Assets = () => {
+const Assets = ({ assets }) => {
   const [active, setActive] = useState();
-  const [assets, setAssets] = useState([]);
-  const fetchUserAssets = async () => {
-    const data = await fetch(`http://localhost:27182/users/${userId}`);
-    const response = await data.json();
-    setAssets(response.assets);
-  };
-  useEffect(() => {
-    fetchUserAssets();
-  }, []);
-
   return (
     <div className='w-5/6 mx-auto mt-5 pl-5 lg:pl-0'>
       <h2 className='text-3xl mb-5 font-bold'>Assets</h2>
@@ -31,11 +19,11 @@ const Assets = () => {
         <main className='space-y-4'>
           {assets.map((asset) => (
             <Asset
-              key={asset}
+              key={asset.id}
               activeHandler={setActive}
               active={active}
               asset={asset}
-              id={asset}
+              id={asset.id}
             />
           ))}
         </main>
