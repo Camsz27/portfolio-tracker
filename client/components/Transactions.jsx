@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Transaction from './Transaction';
 
-const Transactions = () => {
+const Transactions = ({ transactions }) => {
   const [active, setActive] = useState();
   return (
     <div className='w-5/6 mx-auto mt-5 pl-5 lg:pl-0'>
@@ -17,18 +17,15 @@ const Transactions = () => {
           <h3 className='hidden md:col-span-1 md:block'>Actions</h3>
         </header>
         <main className='space-y-4'>
-          <Transaction
-            key={1}
-            activeHandler={setActive}
-            id={1}
-            active={active}
-          />
-          <Transaction
-            key={2}
-            activeHandler={setActive}
-            id={2}
-            active={active}
-          />
+          {transactions.map((transaction) => (
+            <Transaction
+              key={transaction._id}
+              activeHandler={setActive}
+              id={transaction._id}
+              active={active}
+              data={transaction}
+            />
+          ))}
         </main>
       </section>
     </div>
