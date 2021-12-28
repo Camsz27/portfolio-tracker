@@ -17,9 +17,12 @@ exports.create_asset = async (req, res, next) => {
   if (!errors.isEmpty()) {
     res.status(400).send(errors.array());
   }
-  const result = await Asset.find({ coin: req.body.coin });
-  if (result && result.length >= 1) {
-    return res.send({ id: result[0]._id });
+  const user = await User.findById(req.body.userId).populate('assets');
+  const assetFound = user.assets.find(
+    (asset) => asset.coin.toString() === req.body.coin
+  );
+  if (assetFound) {
+    return res.send({ id: assetFound.coin });
   }
   const asset = new Asset({
     coin: req.body.coin,
@@ -29,7 +32,6 @@ exports.create_asset = async (req, res, next) => {
     if (err) {
       return next(err);
     }
-    const user = await User.findById(req.body.userId);
     user.addAsset(asset);
     res.send({ id: asset._id });
   });

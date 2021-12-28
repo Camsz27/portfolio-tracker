@@ -9,6 +9,7 @@ const Asset = ({ activeHandler, id, active, asset }) => {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [changeType, setChangeType] = useState();
   const [type, setType] = useState();
   const [coin, setCoin] = useState(asset.coin._id);
   const [coinInformation, setCoinInformation] = useState();
@@ -41,7 +42,7 @@ const Asset = ({ activeHandler, id, active, asset }) => {
         }
       }}
     >
-      {success && <Message />}
+      {success && <Message type={changeType} />}
       {modal &&
         (type === 'add' ? (
           <AddTransaction
@@ -49,9 +50,17 @@ const Asset = ({ activeHandler, id, active, asset }) => {
             asset={coinInformation}
             id={id}
             successHandler={setSuccess}
+            changeType={setChangeType}
           />
         ) : (
-          <DeleteModal handler={setModal} asset={true} />
+          <DeleteModal
+            handler={setModal}
+            asset={true}
+            id={id}
+            assetId={id}
+            successHandler={setSuccess}
+            changeType={setChangeType}
+          />
         ))}
       <span className='col-span-2 flex md:w-5/6 items-center space-x-4'>
         <div className='hidden md:block'>

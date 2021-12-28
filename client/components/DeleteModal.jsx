@@ -1,6 +1,8 @@
 import React from 'react';
 import Router from 'next/router';
 
+const userId = '61b68c7e91ad3a87651ddf6e';
+
 const DeleteModal = ({
   handler,
   asset,
@@ -29,8 +31,24 @@ const DeleteModal = ({
     }
   };
 
-  const removeAsset = () => {
-    console.log('this is for remove asset');
+  const removeAsset = async () => {
+    const deleteRequest = {
+      assetId,
+      userId,
+    };
+    const request = await fetch('http://localhost:27182/users', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(deleteRequest),
+    });
+    if (request.status === 200) {
+      handler(false);
+      successHandler(true);
+      changeType('deleteAsset');
+      Router.reload();
+    }
   };
 
   return (
