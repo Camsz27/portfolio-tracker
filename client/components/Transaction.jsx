@@ -38,7 +38,14 @@ const Transaction = ({ activeHandler, id, active, data }) => {
             changeType={setChangeType}
           />
         ) : (
-          <DeleteModal handler={setModal} asset={false} />
+          <DeleteModal
+            handler={setModal}
+            asset={false}
+            transactionId={id}
+            successHandler={setSuccess}
+            changeType={setChangeType}
+            assetId={data.assetId}
+          />
         ))}
       <span className='col-span-2 flex items-center space-x-6 md:w-5/6'>
         <h3>{data.coin.name}</h3>

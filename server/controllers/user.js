@@ -159,12 +159,14 @@ exports.get_user_transactions = async (req, res, next) => {
   for (const asset of assets) {
     const coin = asset.coin;
     asset.transactions.map((transaction) => {
-      const newTransaction = { ...transaction._doc, coin: coin };
-      // console.log(newTransaction);
+      const newTransaction = {
+        ...transaction._doc,
+        coin: coin,
+        assetId: asset._id,
+      };
       transactions.push(newTransaction);
     });
   }
   transactions.sort((a, b) => b.date - a.date);
-  // console.log(transactions);
   res.send(transactions);
 };
