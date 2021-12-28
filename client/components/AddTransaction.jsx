@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Message from './Message';
+import Router from 'next/router';
+
+const userId = '61b68c7e91ad3a87651ddf6e';
 
 const AddTransaction = ({ handler, asset, id, successHandler }) => {
   const [active, setActive] = useState('buy');
@@ -16,6 +19,17 @@ const AddTransaction = ({ handler, asset, id, successHandler }) => {
       pricePerCoin,
       date,
     };
+    if (!transactionRequest.id) {
+      const request = await fetch('http://localhost:27182/assets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, coin: asset.id }),
+      });
+      const result = await request.json();
+      transactionRequest.id = result.id;
+    }
     const request = await fetch('http://localhost:27182/assets', {
       method: 'PUT',
       headers: {
@@ -26,6 +40,7 @@ const AddTransaction = ({ handler, asset, id, successHandler }) => {
     if (request.status === 200) {
       handler(false);
       successHandler(true);
+      Router.reload();
     }
   };
   return (

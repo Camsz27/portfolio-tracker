@@ -6,66 +6,65 @@ const trendingCoins = [
     img: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579',
     name: 'Bitcoin',
     symbol: 'BTC',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa482b18008d1ab3625e4',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
     name: 'Ethereum',
     symbol: 'ETH',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab362f23',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
     name: 'Binance Coin',
     symbol: 'BNB',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa482b18008d1ab362591',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/325/small/Tether-logo.png?1598003707',
     name: 'Tether',
     symbol: 'USDT',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab36479f',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/4128/small/Solana.jpg?1635329178',
     name: 'Solana',
     symbol: 'SOL',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab3644ed',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/975/small/cardano.png?1547034860',
     name: 'Cardano',
     symbol: 'ADA',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab362854',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389',
     name: 'USD Coin',
     symbol: 'USDC',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab364a2b',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/8284/small/luna1557227471663.png?1567147072',
     name: 'Terra',
     symbol: 'LUNA',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab364791',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png?1604021818',
     name: 'Avalanche',
     symbol: 'AVAX',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa482b18008d1ab3623eb',
   },
   {
     img: 'https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png?1624446912',
     name: 'Polygon',
     symbol: 'MATIC',
-    id: '61bf54123adc8e8b5de92187',
+    _id: '61bfa483b18008d1ab3638e1',
   },
 ];
 
-const AddAsset = ({ handler, popUp, main }) => {
-  //const [search, setSearch] = useState('');
+const AddAsset = ({ handler, popUp, main, assetHandler }) => {
   const [result, setResult] = useState([]);
   const [initial, setInitial] = useState(true);
   const [initialData, setInitialData] = useState([]);
@@ -85,9 +84,7 @@ const AddAsset = ({ handler, popUp, main }) => {
     const filterCoins = initialData.filter((coin) =>
       coin.name.toLowerCase().includes(search.toLowerCase())
     );
-    console.log(filterCoins);
     setResult(filterCoins);
-    // setResult(filterCoins.slice(0, 9));
     setInitial(false);
   };
 
@@ -147,11 +144,23 @@ const AddAsset = ({ handler, popUp, main }) => {
         <main className='mt-5 w-5/6 mx-auto max-h-96 overflow-y-scroll'>
           {initial &&
             trendingCoins.map((coin, index) => (
-              <SearchResult popUp={popUp} main={main} key={index} coin={coin} />
+              <SearchResult
+                popUp={popUp}
+                main={main}
+                key={index}
+                coin={coin}
+                assetHandler={assetHandler}
+              />
             ))}
           {!initial &&
             result.map((coin, index) => (
-              <SearchResult popUp={popUp} main={main} key={index} coin={coin} />
+              <SearchResult
+                popUp={popUp}
+                main={main}
+                key={index}
+                coin={coin}
+                assetHandler={assetHandler}
+              />
             ))}
         </main>
       </form>

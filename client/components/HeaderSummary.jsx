@@ -6,14 +6,23 @@ const HeaderSummary = ({ transaction, mainPanel }) => {
   const [modal, setModal] = useState(false);
   const [transactionPopUp, setTransactionPopUp] = useState(transaction);
   const [addPopUp, setAddPopUp] = useState(mainPanel);
+  const [asset, setAsset] = useState();
+  const [success, setSuccess] = useState(false);
   return (
     <div className='w-5/6 mx-auto mt-10 pl-5 lg:pl-0'>
-      {modal && transactionPopUp && <AddTransaction handler={setModal} />}
+      {modal && transactionPopUp && (
+        <AddTransaction
+          handler={setModal}
+          asset={asset}
+          successHandler={setSuccess}
+        />
+      )}
       {modal && addPopUp && (
         <AddAsset
           handler={setModal}
           popUp={setTransactionPopUp}
           main={setAddPopUp}
+          assetHandler={setAsset}
         />
       )}
       <h4 className='text-gray-600 text-xl mb-3'>Current Balance</h4>

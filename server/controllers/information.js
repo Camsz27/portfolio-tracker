@@ -22,7 +22,7 @@ exports.getCoin = (req, res, next) => {
       const variation = marketData.price_change_24h;
       const variationPercentage = marketData.price_change_percentage_24h;
       // console.log(Object.keys(data.data));
-      console.log(Object.keys(data.data.image));
+      // console.log(Object.keys(data.data.image));
       res.json({
         symbol,
         id,

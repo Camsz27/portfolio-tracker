@@ -17,9 +17,13 @@ exports.create_asset = async (req, res, next) => {
   if (!errors.isEmpty()) {
     res.status(400).send(errors.array());
   }
+  const result = await Asset.find({ coin: req.body.coin });
+  if (result && result.length >= 1) {
+    return res.send({ id: result[0]._id });
+  }
   const asset = new Asset({
     coin: req.body.coin,
-    transactions: req.body.transactions,
+    transactions: [],
   });
   asset.save(async (err, asset) => {
     if (err) {
@@ -27,7 +31,7 @@ exports.create_asset = async (req, res, next) => {
     }
     const user = await User.findById(req.body.userId);
     user.addAsset(asset);
-    res.send('The asset was added');
+    res.send({ id: asset._id });
   });
 };
 
