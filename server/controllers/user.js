@@ -1,6 +1,8 @@
 const Transaction = require('../models/transaction');
 const Asset = require('../models/asset');
 const User = require('../models/user');
+const CoinGecko = require('coingecko-api');
+const CoinGeckoClient = new CoinGecko();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
@@ -169,4 +171,78 @@ exports.get_user_transactions = async (req, res, next) => {
   }
   transactions.sort((a, b) => b.date - a.date);
   res.send(transactions);
+};
+
+exports.summary = async (req, res, next) => {
+  const user = await User.findById(req.params.id).populate([
+    {
+      path: 'assets',
+      populate: [
+        { path: 'coin', model: 'Coin' },
+        { path: 'transactions', model: 'Transaction' },
+      ],
+    },
+  ]);
+  const promises = user.assets.map(async (asset) => {
+    const averagePrice = await asset.getAveragePrice();
+    const quantity = await asset.getQuantity();
+    const data = await CoinGeckoClient.coins.fetch(asset.coin.id, {
+      developer_data: false,
+      community_data: false,
+      tickers: false,
+    });
+    const symbol = data.data.symbol;
+    const id = data.data.id;
+    const name = data.data.name;
+    const image = data.data.image.small;
+    const price = data.data.market_data.current_price.usd;
+    const variationPercentage =
+      data.data.market_data.price_change_percentage_24h;
+    const profit = quantity * (price - averagePrice);
+    const variationPrice = data.data.market_data.price_change_24h;
+    const result = {
+      symbol,
+      id,
+      name,
+      image,
+      price,
+      variationPercentage,
+      quantity,
+      averagePrice,
+      profit,
+      variationPrice,
+    };
+    return result;
+  });
+  const assetsResults = await Promise.all(promises);
+  let currentBalance = 0;
+  let allTimeProfit = 0;
+  let bestPerformer = { profit: Number.NEGATIVE_INFINITY };
+  let worstPerformer = { profit: Number.POSITIVE_INFINITY };
+  let dayProfit = 0;
+  assetsResults.map((asset) => {
+    currentBalance += asset.price * asset.quantity;
+    allTimeProfit += asset.profit;
+    dayProfit += asset.quantity * asset.variationPrice;
+    if (bestPerformer.profit < asset.profit) {
+      bestPerformer = asset;
+    }
+    if (worstPerformer.profit > asset.profit) {
+      worstPerformer = asset;
+    }
+  });
+  assetsResults.map((asset, index) => {
+    const percentage = ((asset.quantity * asset.price) / currentBalance) * 100;
+    assetsResults[index] = { ...assetsResults[index], percentage };
+  });
+  const dayVariationPercentage = (dayProfit / currentBalance) * 100;
+  res.send({
+    assetsResults,
+    allTimeProfit,
+    bestPerformer,
+    worstPerformer,
+    currentBalance,
+    dayVariationPercentage,
+    dayProfit,
+  });
 };

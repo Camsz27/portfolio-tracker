@@ -20,4 +20,7 @@ router.post('/login', userController.login_user);
 // Deletes the asset with the given id
 router.delete('/', userController.delete_asset_from_user);
 
+// Get summary of the current balance of the portfolio
+router.get('/:id/summary', userController.summary);
+
 module.exports = router;
