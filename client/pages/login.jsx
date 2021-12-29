@@ -1,9 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 
 const login = () => {
   return (
     <div className='flex min-h-screen text-primary'>
+      <Head>
+        <title>Login</title>
+      </Head>
       <section className='min-h-full md:w-1/2 flex flex-col justify-center space-y-8 pl-20'>
         <h1 className='text-5xl lg:text-7xl font-semibold'>
           Welcome back to <span className='text-purple-500'>OUTFOLIO</span>
