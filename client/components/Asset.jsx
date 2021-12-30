@@ -71,12 +71,14 @@ const Asset = ({ activeHandler, id, active, asset }) => {
             alt='coin logo'
           />
         </div>
-        <h3>{coinInformation.name}</h3>
+        <h3 className='relative -left-3 md:left-0'>{coinInformation.name}</h3>
         <h3 className='hidden lg:block text-gray-700'>
           {coinInformation.symbol.toUpperCase()}
         </h3>
       </span>
-      <h5 className='col-span-1'>${coinInformation.price}</h5>
+      <h5 className='col-span-1 text-xs md:text-sm lg:text-base relative -left-4 md:left-0'>
+        ${coinInformation.price}
+      </h5>
       <span
         className={`hidden lg:col-span-1 lg:flex items-center ${
           coinInformation.variationPercentage >= 0
@@ -117,25 +119,26 @@ const Asset = ({ activeHandler, id, active, asset }) => {
         )}
         <h3>{coinInformation.variationPercentage.toPrecision(2)}%</h3>
       </span>
-      <span className='col-span-1 ml-3'>
-        <h3>${(asset.quantity * coinInformation.price).toFixed(2)}</h3>
-        <h5 className='text-gray-700 text-sm'>{`${
+      <span className='col-span-1 ml-3 relative -left-3 md:left-0'>
+        <h3 className='hidden md:block text-sm'>
+          ${(asset.quantity * coinInformation.price).toFixed(2)}
+        </h3>
+        <h5 className='text-gray-700 text-xs md:text-sm'>{`${
           asset.quantity
         } ${asset.coin.symbol.toUpperCase()}`}</h5>
       </span>
       <h5 className='hidden lg:col-span-1 lg:block ml-8'>
         ${asset.averagePrice.toFixed(2)}
       </h5>
-      <span className='hidden md:col-span-1 md:flex flex-col items-start'>
+      <span className='hidden md:col-span-1 md:flex flex-col items-start text-sm'>
         <h3 className='w-5/6 pl-2.5'>
           {asset.quantity * (coinInformation.price - asset.averagePrice) >= 0
             ? '+'
             : '−'}{' '}
           $
-          {(
-            asset.quantity *
-            (coinInformation.price - asset.averagePrice)
-          ).toFixed(2)}
+          {Math.abs(
+            asset.quantity * (coinInformation.price - asset.averagePrice)
+          ).toFixed(1)}
         </h3>
         <span
           className={`flex items-center w-5/6 text-sm ${

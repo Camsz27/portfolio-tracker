@@ -220,9 +220,11 @@ exports.summary = async (req, res, next) => {
   let bestPerformer = { profit: Number.NEGATIVE_INFINITY };
   let worstPerformer = { profit: Number.POSITIVE_INFINITY };
   let dayProfit = 0;
+  let invested = 0;
   assetsResults.map((asset) => {
     currentBalance += asset.price * asset.quantity;
     allTimeProfit += asset.profit;
+    invested += asset.quantity * asset.averagePrice;
     dayProfit += asset.quantity * asset.variationPrice;
     if (bestPerformer.profit < asset.profit) {
       bestPerformer = asset;
@@ -244,5 +246,6 @@ exports.summary = async (req, res, next) => {
     currentBalance,
     dayVariationPercentage,
     dayProfit,
+    invested,
   });
 };

@@ -53,7 +53,7 @@ const Transaction = ({ activeHandler, id, active, data }) => {
           {data.coin.symbol.toUpperCase()}
         </h3>
       </span>
-      <h5 className='col-span-1'>{data.type}</h5>
+      <h5 className='col-span-1 relative -left-5 md:left-0'>{data.type}</h5>
       <h5 className='hidden lg:col-span-1 lg:flex items-center'>
         {date.toLocaleDateString(undefined, {
           year: 'numeric',
@@ -62,10 +62,10 @@ const Transaction = ({ activeHandler, id, active, data }) => {
         })}
       </h5>
       <h5 className='hidden lg:col-span-1 lg:block'>${data.pricePerCoin}</h5>
-      <span className='col-span-1'>
-        <h3>{`${data.type === 'buy' ? '+' : '−'} $${(
-          data.quantity * data.pricePerCoin
-        ).toFixed(2)}`}</h3>
+      <span className='col-span-1 relative -left-4 md:left-0'>
+        <h3 className='hidden md:block'>{`${
+          data.type === 'buy' ? '+' : '−'
+        } $${(data.quantity * data.pricePerCoin).toFixed(2)}`}</h3>
         <h5
           className={`text-sm ${
             data.type === 'buy' ? 'text-green-500' : 'text-red-500'

@@ -8,11 +8,19 @@ const userId = '61b68c7e91ad3a87651ddf6e';
 const MainPanel = () => {
   const [assets, setAssets] = useState([]);
   const [summary, setSummary] = useState();
+  const [statistics, setStatistics] = useState();
 
   const fetchSummary = async () => {
     const data = await fetch(`http://localhost:27182/users/${userId}/summary`);
     const response = await data.json();
+    const statisticsResponse = {
+      bestPerformer: response.bestPerformer,
+      worstPerformer: response.worstPerformer,
+      allTimeProfit: response.allTimeProfit,
+      invested: response.invested,
+    };
     setSummary(response);
+    setStatistics(statisticsResponse);
   };
 
   const fetchUserAssets = async () => {
@@ -26,11 +34,10 @@ const MainPanel = () => {
     fetchSummary();
   }, []);
 
-  console.log(summary);
   return (
     <div className='flex-grow lg:ml-0 ml-12'>
       <HeaderSummary mainPanel={true} information={summary} />
-      <Graphs />
+      <Graphs statistics={statistics} />
       <Assets assets={assets} />
     </div>
   );
