@@ -1,15 +1,59 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import {
+  PieChart,
+  Pie,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  Cell,
+} from 'recharts';
 
-const Graphs = ({ statistics }) => {
+const colors = [
+  '#9333ea',
+  '#4c5fc9',
+  '#2875b9',
+  '#048ba8',
+  '#f7996e',
+  '#f25f5e',
+  '#ed254e',
+  '#e7dfc6',
+  '#faa916',
+  '#edd2e0',
+];
+
+const Graphs = ({ statistics, data }) => {
   const [active, setActive] = useState('allocation');
-  if (!statistics) {
+
+  if (!statistics || !data) {
     return (
       <div className='w-5/6 mx-auto mt-10 pl-5 lg:pl-0 h-24'>
         <h4 className='text-gray-600 text-3xl mb-3'>Loading...</h4>
       </div>
     );
   }
+
+  const customizedLabel = ({ x, y, value }) => {
+    return (
+      <text
+        x={x}
+        y={y}
+        fill='current'
+        dy={3}
+        dx={-2}
+        className='font-bold'
+        textAnchor='end'
+      >
+        <tspan
+          alignmentBaseline='middle'
+          fontSize='26'
+          className='hidden'
+        >{`${value.toFixed(2)}%`}</tspan>
+        <tspan fontSize='14'>{`${value.toFixed(2)}%`}</tspan>
+      </text>
+    );
+  };
+
   const bestPerformer = statistics.bestPerformer;
   const worstPerformer = statistics.worstPerformer;
 
@@ -113,7 +157,29 @@ const Graphs = ({ statistics }) => {
   );
 
   const allocationJsx = (
-    <section className='h-56 md:h-96'>Here goes the allocation</section>
+    <ResponsiveContainer
+      width={'90%'}
+      minWidth={250}
+      minHeight={600}
+      height={'100%'}
+    >
+      <PieChart className='flex justify-center'>
+        <Pie
+          dataKey='percentage'
+          nameKey='name'
+          isAnimationActive
+          data={data}
+          fill='#9333ea'
+          label={customizedLabel}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={colors[index]} />
+          ))}
+        </Pie>
+        <Legend verticalAlign='top' height={36} />
+        <Tooltip formatter={(value, name) => `${value.toFixed(2)}%`} />
+      </PieChart>
+    </ResponsiveContainer>
   );
 
   return (

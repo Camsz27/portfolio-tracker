@@ -37,7 +37,9 @@ const MainPanel = () => {
   return (
     <div className='flex-grow lg:ml-0 ml-12'>
       <HeaderSummary mainPanel={true} information={summary} />
-      <Graphs statistics={statistics} />
+      {summary && (
+        <Graphs statistics={statistics} data={summary.assetsResults} />
+      )}
       <Assets assets={assets} />
     </div>
   );
