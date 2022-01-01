@@ -56,11 +56,11 @@ exports.create_user = [
         currency: req.body.currency,
         language: req.body.language,
       });
-      user.save((err) => {
+      user.save((err, result) => {
         if (err) {
           return res.status(400).send('There was an error creating the user');
         }
-        res.send('The user has been created');
+        res.send(result);
       });
     });
   },

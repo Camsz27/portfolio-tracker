@@ -26,6 +26,11 @@ const Transactions = ({ transactions }) => {
               data={transaction}
             />
           ))}
+          {transactions.length === 0 && (
+            <div className='flex font-bold mt-10 gap-x-10 flex-col lg:flex-row items-center gap-y-5'>
+              You have no assets, add one first!
+            </div>
+          )}
         </main>
       </section>
     </div>

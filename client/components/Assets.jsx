@@ -17,15 +17,21 @@ const Assets = ({ assets }) => {
           <h3 className='hidden md:col-span-1 md:block'>Actions</h3>
         </header>
         <main className='space-y-4'>
-          {assets.map((asset) => (
-            <Asset
-              key={asset.id}
-              activeHandler={setActive}
-              active={active}
-              asset={asset}
-              id={asset.id}
-            />
-          ))}
+          {assets &&
+            assets.map((asset) => (
+              <Asset
+                key={asset.id}
+                activeHandler={setActive}
+                active={active}
+                asset={asset}
+                id={asset.id}
+              />
+            ))}
+          {assets.length === 0 && (
+            <div className='flex font-bold mt-10 gap-x-10 flex-col lg:flex-row items-center gap-y-5'>
+              You have no assets, add one first!
+            </div>
+          )}
         </main>
       </section>
     </div>

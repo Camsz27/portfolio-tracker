@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from 'react';
+import React, { useRef, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AuthContext from '../store/AuthContext';
 import { useRouter } from 'next/router';
@@ -9,6 +9,12 @@ const LoginForm = () => {
   const [error, setError] = useState(false);
   const authContext = useContext(AuthContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (authContext.isLoggedIn) {
+      router.back();
+    }
+  }, [authContext.isLoggedIn, router]);
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -26,7 +32,9 @@ const LoginForm = () => {
       setError(true);
     } else {
       const response = await request.json();
-      authContext.login(response);
+      authContext.login(response._id);
+      localStorage.setItem('user', response._id);
+      localStorage.setItem('login', true);
       router.push('/');
     }
   };

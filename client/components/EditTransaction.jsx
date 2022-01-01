@@ -22,7 +22,7 @@ const EditTransaction = ({
       pricePerCoin,
       date,
     };
-    const request = await fetch('http://localhost:27182/transactions', {
+    const request = await fetch(`${server}/transactions`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -58,7 +58,10 @@ const HeaderSummary = ({ transaction, mainPanel, information }) => {
               <path d='M7 14l5-5 5 5H7z' />
             </svg>
             <h5 className='text-base'>
-              {information.dayVariationPercentage.toFixed(2)}%
+              {information.dayVariationPercentage
+                ? information.dayVariationPercentage.toFixed(2)
+                : 0.0}
+              %
             </h5>
           </span>
           <button
@@ -91,9 +94,11 @@ const HeaderSummary = ({ transaction, mainPanel, information }) => {
             information.dayProfit >= 0 ? 'text-green-500' : 'text-red-500'
           }`}
         >
-          {`${information.dayProfit >= 0 ? '+' : '−'} $${Math.abs(
-            information.dayProfit.toFixed(2)
-          )}`}
+          {information.dayProfit
+            ? `${information.dayProfit >= 0 ? '+' : '−'} $${Math.abs(
+                information.dayProfit.toFixed(2)
+              )}`
+            : 0.0}
         </h2>
         <h5 className='bg-purple-200 rounded-lg p-1 text-base'>24h</h5>
       </span>

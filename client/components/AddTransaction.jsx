@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Image from 'next/image';
 import Message from './Message';
 import Router from 'next/router';
-
-const userId = '61b68c7e91ad3a87651ddf6e';
+import AuthContext from '../store/AuthContext';
 
 const AddTransaction = ({ handler, asset, id, successHandler }) => {
   const [active, setActive] = useState('buy');
   const [quantity, setQuantity] = useState(0);
   const [pricePerCoin, setPricePerCoin] = useState(0);
   const [date, setDate] = useState();
+  const authContext = useContext(AuthContext);
 
   const addTransaction = async () => {
     const transactionRequest = {
@@ -20,17 +20,17 @@ const AddTransaction = ({ handler, asset, id, successHandler }) => {
       date,
     };
     if (!transactionRequest.id) {
-      const request = await fetch('http://localhost:27182/assets', {
+      const request = await fetch(`${server}/assets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, coin: asset.id }),
+        body: JSON.stringify({ userId: authContext.user, coin: asset.id }),
       });
       const result = await request.json();
       transactionRequest.id = result.id;
     }
-    const request = await fetch('http://localhost:27182/assets', {
+    const request = await fetch(`${server}/assets`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const AddTransaction = ({ handler, asset, id, successHandler }) => {
         </h2>
         {active !== 'transfer' ? (
           <h2 className='text-2xl font-semibold mt-2 mb-4 ml-7 lg:ml-14'>
-            ${quantity * pricePerCoin}
+            ${(quantity * pricePerCoin).toFixed(2)}
           </h2>
         ) : (
           ''

@@ -1,35 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import HeaderSummary from './HeaderSummary';
 import Transactions from './Transactions';
-
-const userId = '61b68c7e91ad3a87651ddf6e';
+import AuthContext from '../store/AuthContext';
+import { useRouter } from 'next/router';
 
 const TransactionPanel = () => {
   const [transactions, setTransactions] = useState([]);
   const [summary, setSummary] = useState();
+  const authContext = useContext(AuthContext);
+  const router = useRouter();
 
-  const fetchSummary = async () => {
-    const data = await fetch(`http://localhost:27182/users/${userId}/summary`);
+  const fetchSummary = useCallback(async () => {
+    const data = await fetch(`${server}/users/${authContext.user}/summary`);
     const response = await data.json();
     setSummary(response);
-  };
+  }, [authContext.user]);
 
-  const fetchUserTransactions = async () => {
+  const fetchUserTransactions = useCallback(async () => {
     const data = await fetch(
-      `http://localhost:27182/users/${userId}/transactions`
+      `${server}/users/${authContext.user}/transactions`
     );
     const response = await data.json();
     setTransactions(response);
-  };
+  }, [authContext.user]);
 
   useEffect(() => {
-    fetchUserTransactions();
-    fetchSummary();
-  }, []);
+    if (authContext.user) {
+      fetchUserTransactions();
+      fetchSummary();
+    } else {
+      router.push('/login');
+    }
+  }, [authContext.user, fetchSummary, fetchUserTransactions, router]);
 
   return (
     <div className='flex-grow lg:ml-0 ml-12'>
-      <HeaderSummary transaction={true} information={summary} />
+      <HeaderSummary mainPanel={true} information={summary} />
       <Transactions transactions={transactions} />
     </div>
   );

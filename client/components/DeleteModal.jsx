@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Router from 'next/router';
-
-const userId = '61b68c7e91ad3a87651ddf6e';
+import AuthContext from '../store/AuthContext';
 
 const DeleteModal = ({
   handler,
@@ -11,12 +10,13 @@ const DeleteModal = ({
   changeType,
   assetId,
 }) => {
+  const authContext = useContext(AuthContext);
   const removeTransaction = async () => {
     const deleteRequest = {
       assetId,
       transactionId,
     };
-    const request = await fetch('http://localhost:27182/assets/transaction', {
+    const request = await fetch(`${server}/assets/transaction`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -34,9 +34,9 @@ const DeleteModal = ({
   const removeAsset = async () => {
     const deleteRequest = {
       assetId,
-      userId,
+      userId: authContext.user,
     };
-    const request = await fetch('http://localhost:27182/users', {
+    const request = await fetch(`${server}/users`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

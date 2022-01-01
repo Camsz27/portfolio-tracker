@@ -3,7 +3,7 @@ import React from 'react';
 const Settings = ({ handler }) => {
   return (
     <div className='absolute top-0 left-0 z-10 w-screen h-screen backdrop-filter backdrop-brightness-75 flex items-center md:text-lg'>
-      <content
+      <main
         className='xl:w-1/4 md:w-1/2 mx-auto bg-purple-500 text-white rounded-lg flex flex-col pb-5 lg:pb-7'
         style={{ minWidth: '290px' }}
       >
@@ -30,7 +30,7 @@ const Settings = ({ handler }) => {
             </svg>
           </button>
         </span>
-      </content>
+      </main>
     </div>
   );
 };

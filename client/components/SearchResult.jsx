@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const SearchResult = ({ popUp, main, coin, assetHandler }) => {
   const fetchCoinInformation = async () => {
-    const data = await fetch(`http://localhost:27182/information/${coin._id}`);
+    const data = await fetch(`${server}/information/${coin._id}`);
     const response = await data.json();
     return response;
   };

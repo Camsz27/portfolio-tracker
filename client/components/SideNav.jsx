@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
 import Settings from './Settings';
+import AuthContext from '../store/AuthContext';
+import { useRouter } from 'next/router';
 
 const SideNav = ({ active }) => {
   const [collapse, setCollapse] = useState(true);
   const [modal, setModal] = useState(false);
+  const router = useRouter();
+  const authContext = useContext(AuthContext);
 
   const collapseHandler = () => {
     setCollapse((prev) => !prev);
+  };
+
+  const logoutHandler = () => {
+    authContext.logout();
+    localStorage.clear();
+    router.push('/login');
   };
 
   return (
@@ -70,7 +80,7 @@ const SideNav = ({ active }) => {
         <Link href='/' passHref>
           <li
             className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
-              active === 'dashboard' ? 'text-purple-800' : ''
+              active === 'dashboard' ? 'text-purple-800 font-bold' : ''
             }`}
           >
             <svg
@@ -95,7 +105,7 @@ const SideNav = ({ active }) => {
         <Link href='/transactions' passHref>
           <li
             className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
-              active === 'transactions' ? 'text-purple-800' : ''
+              active === 'transactions' ? 'text-purple-800 font-bold' : ''
             }`}
           >
             <svg
@@ -119,11 +129,11 @@ const SideNav = ({ active }) => {
             )}
           </li>
         </Link>
-        <li
+        {/* <li
           className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center ${
             active === 'settings' ? 'text-purple-800' : ''
           }`}
-          onClick={() => setModal(true)}
+          // onClick={() => setModal(true)}
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -147,6 +157,28 @@ const SideNav = ({ active }) => {
           </svg>
           {!collapse && (
             <h4 className='col-span-4 group-hover:underline'>Settings</h4>
+          )}
+        </li> */}
+        <li
+          className={`grid grid-cols-6 group cursor-pointer transform transition duration-400 hover:scale-110 place-items-center`}
+          onClick={logoutHandler}
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className={`h-8 w-8 ${collapse ? 'col-span-6' : 'col-span-2'}`}
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'
+            />
+          </svg>
+          {!collapse && (
+            <h4 className='col-span-4 group-hover:underline'>Logout</h4>
           )}
         </li>
       </ul>
