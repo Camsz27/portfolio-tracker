@@ -1,34 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Outfolio
 
-## Getting Started
+It is a crypto portfolio tracker, where you can add the different cryptocurrencies that you have and be updated on their real-time price, variation in the last 24 hours, the profit/loss per asset, and the percentage allocation of your entire portfolio.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+[Click Here](https://outfolio.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![image](/client/public/preview.png 'App preview')
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Description
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+This project uses the CoinGecko API to fetch real-time data for several cryptocurrencies. From the app, you can manage your transactions for each asset or even add or delete an entire cryptocurrency with their respective transactions, for each transaction, you can edit their values in case of a mistake. Finally, there is a tab to view your statistics where you can find your all-time profit and the worst/best performers in your portfolio.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Built With
 
-## Learn More
+- Tailwind CSS
+- React.js/Next.js
+- Node.js/Express
+- MongoDB/Mongoose
+- CoinGecko API
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License - see the LICENSE.md file for details.

@@ -178,6 +178,7 @@ const Graphs = ({ statistics, data }) => {
     allocationJsx = (
       <ResponsiveContainer
         width={'80%'}
+        minWidth={220}
         aspect={2.2}
         className='flex justify-center w-full mx-auto'
       >
@@ -195,7 +196,7 @@ const Graphs = ({ statistics, data }) => {
               <Cell key={`cell-${index}`} fill={colors[index]} />
             ))}
           </Pie>
-          <Legend verticalAlign='top' height={36} />
+          <Legend verticalAlign='top' width={'100%'} height={'10%'} />
           <Tooltip formatter={(value, name) => `${value.toFixed(2)}%`} />
         </PieChart>
       </ResponsiveContainer>
