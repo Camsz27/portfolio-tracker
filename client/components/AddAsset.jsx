@@ -70,7 +70,7 @@ const AddAsset = ({ handler, popUp, main, assetHandler }) => {
   const [initialData, setInitialData] = useState([]);
 
   const fetchCoins = async () => {
-    const data = await fetch('http://localhost:27182/information/coins');
+    const data = await fetch(`${server}/information/coins`);
     const result = await data.json();
     setInitialData(result);
   };
