@@ -177,16 +177,15 @@ const Graphs = ({ statistics, data }) => {
     );
     allocationJsx = (
       <ResponsiveContainer
-        width={'100%'}
-        maxWidth={450}
-        aspect={1.5}
-        className='flex justify-center w-full'
+        width={'80%'}
+        aspect={2.2}
+        className='flex justify-center w-full mx-auto'
       >
         <PieChart className='w-full'>
           <Pie
             dataKey='percentage'
             nameKey='name'
-            isAnimationActive
+            isAnimationActive={true}
             data={data}
             fill='#9333ea'
             label={customizedLabel}
@@ -205,7 +204,7 @@ const Graphs = ({ statistics, data }) => {
 
   return (
     <div className='w-5/6 mx-auto mt-5 pl-5 lg:pl-0'>
-      <header className='flex justify-between gap-x-1 lg:w-1/3 md:w-96 mb-3'>
+      <header className='flex gap-x-10 lg:w-1/3 md:w-96 mb-3'>
         <button
           className={`${
             active === 'allocation' ? 'bg-purple-600' : 'bg-purple-400'

@@ -15,7 +15,7 @@ const Asset = ({ activeHandler, id, active, asset }) => {
   const [coinInformation, setCoinInformation] = useState();
 
   const fetchCoinInformation = async (coin) => {
-    const data = await fetch(`http://localhost:27182/information/${coin}`);
+    const data = await fetch(`${server}/information/${coin}`);
     const response = await data.json();
     setCoinInformation(response);
   };

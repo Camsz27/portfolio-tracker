@@ -22,7 +22,7 @@ const SideNav = ({ active }) => {
 
   return (
     <div
-      className={`min-h-screen bg-purple-500 z-10 absolute lg:relative ${
+      className={`bg-purple-500 z-10 absolute lg:relative min-h-screen ${
         collapse ? 'px-4 md:px-6 lg:px-7' : 'pl-10'
       }`}
     >
