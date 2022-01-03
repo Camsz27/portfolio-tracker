@@ -1,5 +1,6 @@
 import React, { useRef, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import AuthContext from '../store/AuthContext';
 import { useRouter } from 'next/router';
 
@@ -40,7 +41,7 @@ const LoginForm = () => {
   };
   return (
     <>
-      <section className='min-h-full md:w-1/2 flex flex-col justify-center space-y-8 pl-20'>
+      <section className='min-h-full md:w-1/2 flex flex-col justify-center space-y-8 pl-10 md:pl-20'>
         <h1 className='text-5xl lg:text-7xl font-semibold'>
           Welcome back to <span className='text-purple-500'>OUTFOLIO</span>
         </h1>
@@ -89,8 +90,14 @@ const LoginForm = () => {
           Keep track of your portfolio with an easy to use{' '}
           <span className='text-purple-900'>dashboard</span>
         </h1>
-        <div className='flex items-center justify-center w-11/12 mx-auto bg-black h-96'>
-          Here goes picture
+        <div className='flex mx-auto max-w-lg md:pt-3 lg:pt-12'>
+          <Image
+            src={'/preview.png'}
+            layout='intrinsic'
+            width={700}
+            height={680}
+            alt='app preview'
+          />
         </div>
       </section>
     </>
